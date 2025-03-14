@@ -1,0 +1,23 @@
+import { TicketService } from "@/apps/ticket/ticket.service";
+import { Controller, Get, NotFoundException, Param } from "@nestjs/common";
+
+@Controller("tickets")
+export class TicketController {
+  constructor(private readonly ticket: TicketService) {}
+
+  @Get()
+  async findAll() {
+    return await this.ticket.findAll();
+  }
+
+  @Get(":id")
+  async findOne(@Param("id") id: number) {
+    const ticket = await this.ticket.findOneById(id);
+
+    if (!ticket) {
+      throw new NotFoundException("Ticket not found");
+    }
+
+    return ticket;
+  }
+}

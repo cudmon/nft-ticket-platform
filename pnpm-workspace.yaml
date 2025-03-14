@@ -1,0 +1,7 @@
+packages:
+  - api
+  - contracts
+  - web
+onlyBuiltDependencies:
+  - keccak
+  - secp256k1
