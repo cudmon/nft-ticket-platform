@@ -14,3 +14,5 @@ export const Session = createParamDecorator(
     return data ? user?.[data] : user;
   }
 );
+
+export type Session = User;

@@ -7,9 +7,11 @@ import {
   Body,
   ConflictException,
   Controller,
+  Get,
   Post,
   UnauthorizedException,
 } from "@nestjs/common";
+import { Session } from "@/common/decorators/session.decorator";
 
 @Controller("auth")
 export class AuthController {
@@ -18,6 +20,11 @@ export class AuthController {
     private readonly auth: AuthService,
     private readonly user: UserService
   ) {}
+
+  @Get("me")
+  async me(@Session("id") id: number) {
+    return await this.auth.me(id);
+  }
 
   @Public()
   @Post("login")

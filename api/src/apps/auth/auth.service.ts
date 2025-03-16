@@ -5,6 +5,10 @@ import { UserService } from "@/apps/user/user.service";
 export class AuthService {
   constructor(private readonly user: UserService) {}
 
+  async me(id: number) {
+    return await this.user.findOneById(id);
+  }
+
   async login(email: string, password: string) {
     const user = await this.user.findOneByEmail(email);
 
