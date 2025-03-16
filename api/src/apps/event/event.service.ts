@@ -47,14 +47,16 @@ export class EventService {
     return await this.findOneById(id);
   }
 
-  async remove(id: number): Promise<boolean> {
+  async delete(id: number): Promise<boolean> {
     const found = await this.findOneById(id);
 
     if (!found) {
       return false;
     }
 
-    await this.events.delete({ id });
+    await this.events.delete({
+      id,
+    });
 
     return true;
   }
