@@ -1,5 +1,10 @@
+import { ApiSchema } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty } from "class-validator";
 
+@ApiSchema({
+  name: "Login",
+  description: "Login DTO",
+})
 export class LoginDto {
   @IsEmail()
   email: string;
@@ -8,6 +13,10 @@ export class LoginDto {
   password: string;
 }
 
+@ApiSchema({
+  name: "Register",
+  description: "Register DTO",
+})
 export class RegisterDto {
   @IsEmail()
   email: string;

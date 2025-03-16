@@ -2,9 +2,13 @@ import { Exclude } from "class-transformer";
 import { BaseEntity } from "@/models/base.entity";
 import { EventEntity } from "@/models/event.entity";
 import { Column, Entity, OneToMany } from "typeorm";
+import { ApiSchema } from "@nestjs/swagger";
 
 @Entity({
   name: "users",
+})
+@ApiSchema({
+  name: "User",
 })
 export class UserEntity extends BaseEntity {
   @Column({

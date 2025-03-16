@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { PartialType } from "@nestjs/swagger";
+import { ApiSchema, PartialType } from "@nestjs/swagger";
 import {
   IsString,
   IsNotEmpty,
@@ -8,6 +8,10 @@ import {
   IsBoolean,
 } from "class-validator";
 
+@ApiSchema({
+  name: "Create Event",
+  description: "Data for creating an event",
+})
 export class CreateEvent {
   @IsString()
   @IsNotEmpty()
@@ -27,6 +31,10 @@ export class CreateEvent {
   description?: string;
 }
 
+@ApiSchema({
+  name: "Update Event",
+  description: "Data for updating an event",
+})
 export class UpdateEvent extends PartialType(CreateEvent) {
   @IsBoolean()
   @IsOptional()

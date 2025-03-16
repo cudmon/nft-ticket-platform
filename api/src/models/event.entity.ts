@@ -1,12 +1,15 @@
 import { Transform } from "class-transformer";
 import { BaseEntity } from "@/models/base.entity";
-import { ApiHideProperty, ApiProperty } from "@nestjs/swagger";
+import { ApiHideProperty, ApiProperty, ApiSchema } from "@nestjs/swagger";
 import { UserEntity } from "@/models/user.entity";
 import { TicketEntity } from "@/models/ticket.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity({
   name: "events",
+})
+@ApiSchema({
+  name: "Event",
 })
 export class EventEntity extends BaseEntity {
   @Column({
