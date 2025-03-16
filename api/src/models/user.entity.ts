@@ -31,6 +31,8 @@ export class UserEntity extends BaseEntity {
   })
   name: string;
 
-  @OneToMany(() => EventEntity, (event) => event.id)
+  @OneToMany(() => EventEntity, (event) => event.id, {
+    nullable: false,
+  })
   events: EventEntity[];
 }

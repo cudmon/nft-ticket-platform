@@ -21,6 +21,8 @@ export class TicketEntity extends BaseEntity {
   })
   price: number;
 
-  @ManyToOne(() => EventEntity, (event) => event.id, {})
+  @ManyToOne(() => EventEntity, (event) => event.id, {
+    nullable: false,
+  })
   event: EventEntity;
 }

@@ -48,10 +48,14 @@ export class EventEntity extends BaseEntity {
 
   @ApiHideProperty()
   @JoinColumn({ name: "owner_id" })
-  @ManyToOne(() => UserEntity, (user) => user.events, {})
+  @ManyToOne(() => UserEntity, (user) => user.events, {
+    nullable: false,
+  })
   owner: UserEntity;
 
   @ApiHideProperty()
-  @OneToMany(() => TicketEntity, (ticket) => ticket.id)
+  @OneToMany(() => TicketEntity, (ticket) => ticket.id, {
+    nullable: false,
+  })
   tickets: TicketEntity[];
 }
