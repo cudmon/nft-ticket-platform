@@ -1,3 +1,4 @@
+import { CreateEvent } from "@/apps/event/event.dto";
 import { UserService } from "@/apps/user/user.service";
 import { EventService } from "@/apps/event/event.service";
 import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
@@ -48,6 +49,18 @@ export class UserController {
 
     return this.user.create({
       ...user,
+    });
+  }
+
+  @Post(":id/events")
+  async createEvent(
+    @Param("id") id: number,
+    @Body()
+    event: CreateEvent
+  ) {
+    return await this.event.create({
+      ...event,
+      owner_id: id,
     });
   }
 
