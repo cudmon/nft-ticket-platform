@@ -1,7 +1,9 @@
+import { Transform } from "class-transformer";
 import { BaseEntity } from "@/models/base.entity";
-import { ApiHideProperty } from "@nestjs/swagger";
-import { Column, Entity, OneToMany } from "typeorm";
+import { ApiHideProperty, ApiProperty } from "@nestjs/swagger";
+import { UserEntity } from "@/models/user.entity";
 import { TicketEntity } from "@/models/ticket.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity({
   name: "events",
@@ -37,6 +39,14 @@ export class EventEntity extends BaseEntity {
     default: false,
   })
   published: boolean;
+
+  @Column()
+  owner_id: number;
+
+  @ApiHideProperty()
+  @JoinColumn({ name: "owner_id" })
+  @ManyToOne(() => UserEntity, (user) => user.events, {})
+  owner: UserEntity;
 
   @ApiHideProperty()
   @OneToMany(() => TicketEntity, (ticket) => ticket.id)
