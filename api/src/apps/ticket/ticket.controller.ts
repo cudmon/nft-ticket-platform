@@ -1,12 +1,16 @@
 import { TicketService } from "@/apps/ticket/ticket.service";
 import { Public } from "@/common/decorators/public.decorator";
 import {
+  Body,
   Controller,
   Delete,
   Get,
   NotFoundException,
   Param,
+  Patch,
+  Post,
 } from "@nestjs/common";
+import { CreateTicket, UpdateTicket } from "./ticket.dto";
 
 @Controller("tickets")
 export class TicketController {
@@ -25,6 +29,22 @@ export class TicketController {
 
     if (!ticket) {
       throw new NotFoundException("Ticket not found");
+    }
+
+    return ticket;
+  }
+
+  @Post()
+  async create(@Body() data: CreateTicket) {
+    return this.ticket.create(data);
+  }
+
+  @Patch(":id")
+  async update(@Param("id") id: number, @Body() data: UpdateTicket) {
+    const ticket = await this.ticket.update(id, data);
+
+    if (!ticket) {
+      throw new NotFoundException("ticket not found");
     }
 
     return ticket;

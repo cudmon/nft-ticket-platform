@@ -1,5 +1,5 @@
-import { ApiSchema } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber } from "class-validator";
+import { ApiSchema, PartialType } from "@nestjs/swagger";
 
 @ApiSchema({
   name: "Create Ticket",
@@ -17,3 +17,9 @@ export class CreateTicket {
   @IsNotEmpty()
   event_id: number;
 }
+
+@ApiSchema({
+  name: "Update Ticket",
+  description: "Data for updating a ticket",
+})
+export class UpdateTicket extends PartialType(CreateTicket) {}
