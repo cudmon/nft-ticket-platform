@@ -40,4 +40,18 @@ export class TicketService {
   async createMany(data: CreateTicket[]): Promise<TicketEntity[]> {
     return this.tickets.save(data);
   }
+
+  async delete(id: number): Promise<boolean> {
+    const found = await this.findOneById(id);
+
+    if (!found) {
+      return false;
+    }
+
+    await this.tickets.delete({
+      id,
+    });
+
+    return true;
+  }
 }

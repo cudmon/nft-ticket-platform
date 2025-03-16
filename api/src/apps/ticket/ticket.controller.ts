@@ -1,6 +1,12 @@
 import { TicketService } from "@/apps/ticket/ticket.service";
 import { Public } from "@/common/decorators/public.decorator";
-import { Controller, Get, NotFoundException, Param } from "@nestjs/common";
+import {
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+} from "@nestjs/common";
 
 @Controller("tickets")
 export class TicketController {
@@ -22,5 +28,10 @@ export class TicketController {
     }
 
     return ticket;
+  }
+
+  @Delete(":id")
+  async delete(@Param("id") id: number) {
+    return await this.ticket.delete(id);
   }
 }
