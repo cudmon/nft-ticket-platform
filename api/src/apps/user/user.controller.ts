@@ -1,11 +1,14 @@
-import { CreateUser } from "@/apps/user/user.dto";
+import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
 import { UserService } from "@/apps/user/user.service";
 import {
   Body,
   ConflictException,
   Controller,
+  Delete,
   Get,
+  NotFoundException,
   Param,
+  Patch,
   Post,
 } from "@nestjs/common";
 
@@ -37,5 +40,31 @@ export class UserController {
     return this.user.create({
       ...user,
     });
+  }
+
+  @Patch(":id")
+  async update(
+    @Param("id") id: number,
+    @Body()
+    data: UpdateUser
+  ) {
+    const user = await this.user.update(id, data);
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    return user;
+  }
+
+  @Delete(":id")
+  async delete(@Param("id") id: number) {
+    const removed = await this.user.delete(id);
+
+    if (!removed) {
+      throw new NotFoundException("User not found");
+    }
+
+    return removed;
   }
 }
