@@ -36,8 +36,15 @@ export class UserService {
   }
 
   async update(id: number, user: UpdateUser): Promise<UserEntity | null> {
-    await this.users.update(id, user);
-    return this.findOneById(id);
+    const found = await this.findOneById(id);
+
+    if (!found) {
+      return null;
+    }
+
+    await this.users.update({ id }, user);
+
+    return await this.findOneById(id);
   }
 
   async delete(id: number): Promise<boolean> {
