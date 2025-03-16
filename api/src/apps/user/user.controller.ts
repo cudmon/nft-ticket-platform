@@ -1,5 +1,6 @@
-import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
 import { UserService } from "@/apps/user/user.service";
+import { EventService } from "@/apps/event/event.service";
+import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
 import {
   Body,
   ConflictException,
@@ -14,7 +15,10 @@ import {
 
 @Controller("users")
 export class UserController {
-  constructor(private readonly user: UserService) {}
+  constructor(
+    private readonly user: UserService,
+    private readonly event: EventService
+  ) {}
 
   @Get()
   async findAll() {
@@ -24,6 +28,11 @@ export class UserController {
   @Get(":id")
   async findOne(@Param("id") id: number) {
     return await this.user.findOneById(id);
+  }
+
+  @Get(":id/events")
+  async findEvents(@Param("id") id: number) {
+    return await this.event.findByUserId(id);
   }
 
   @Post()
