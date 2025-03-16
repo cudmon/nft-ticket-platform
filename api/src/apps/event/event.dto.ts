@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsDate,
   IsBoolean,
+  IsNumber,
 } from "class-validator";
 
 @ApiSchema({
@@ -29,6 +30,9 @@ export class CreateEvent {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @IsNumber()
+  owner_id: number;
 }
 
 @ApiSchema({
