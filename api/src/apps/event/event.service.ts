@@ -15,6 +15,14 @@ export class EventService {
     return await this.events.find();
   }
 
+  async findByUserId(id: number): Promise<EventEntity[]> {
+    return await this.events.find({
+      where: {
+        owner_id: id,
+      },
+    });
+  }
+
   async findOneById(id: number): Promise<EventEntity | null> {
     return await this.events.findOne({
       where: {
