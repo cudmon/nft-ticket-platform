@@ -1,7 +1,12 @@
 import { Type } from "class-transformer";
-import { OmitType } from "@nestjs/mapped-types";
-import { CreateTicket } from "@/apps/ticket/ticket.dto";
-import { IsString, IsNotEmpty, IsOptional, IsDate } from "class-validator";
+import { PartialType } from "@nestjs/swagger";
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsDate,
+  IsBoolean,
+} from "class-validator";
 
 export class CreateEvent {
   @IsString()
@@ -20,4 +25,10 @@ export class CreateEvent {
   @IsString()
   @IsOptional()
   description?: string;
+}
+
+export class UpdateEvent extends PartialType(CreateEvent) {
+  @IsBoolean()
+  @IsOptional()
+  published?: boolean;
 }

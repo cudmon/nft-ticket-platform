@@ -1,18 +1,21 @@
+import { OmitType } from "@nestjs/swagger";
 import { CreateEvent } from "@/apps/event/event.dto";
+import { CreateTicket } from "@/apps/ticket/ticket.dto";
 import { EventService } from "@/apps/event/event.service";
 import { TicketService } from "@/apps/ticket/ticket.service";
+import { Public } from "@/common/decorators/public.decorator";
 import {
   Body,
   ConflictException,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
   ParseArrayPipe,
+  Patch,
   Post,
 } from "@nestjs/common";
-import { CreateTicket } from "../ticket/ticket.dto";
-import { OmitType } from "@nestjs/swagger";
 
 @Controller("events")
 export class EventController {
@@ -21,11 +24,13 @@ export class EventController {
     private readonly ticket: TicketService
   ) {}
 
+  @Public()
   @Get()
   async findAll() {
     return await this.event.findAll();
   }
 
+  @Public()
   @Get(":id")
   async findOne(@Param("id") id: number) {
     const event = await this.event.findOneById(id);
@@ -37,6 +42,7 @@ export class EventController {
     return event;
   }
 
+  @Public()
   @Get(":id/tickets")
   async findTickets(@Param("id") id: number) {
     return await this.ticket.findByEventId(id);
@@ -70,5 +76,27 @@ export class EventController {
     return await this.ticket.createMany(
       data.map((ticket) => ({ ...ticket, event_id: id }))
     );
+  }
+
+  @Patch(":id")
+  async updateEvent(@Param("id") id: number, @Body() data: CreateEvent) {
+    const event = await this.event.update(id, data);
+
+    if (!event) {
+      throw new NotFoundException("Event not found");
+    }
+
+    return event;
+  }
+
+  @Delete(":id")
+  async deleteEvent(@Param("id") id: number) {
+    const removed = await this.event.remove(id);
+
+    if (!removed) {
+      throw new NotFoundException("Event not found");
+    }
+
+    return removed;
   }
 }
