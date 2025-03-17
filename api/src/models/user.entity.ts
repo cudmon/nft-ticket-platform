@@ -1,8 +1,13 @@
 import { Exclude } from "class-transformer";
+import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
 import { EventEntity } from "@/models/event.entity";
 import { Column, Entity, OneToMany } from "typeorm";
-import { ApiSchema } from "@nestjs/swagger";
+
+export enum Role {
+  User = "user",
+  Admin = "admin",
+}
 
 @Entity({
   name: "users",
@@ -30,6 +35,13 @@ export class UserEntity extends BaseEntity {
     length: 100,
   })
   name: string;
+
+  @Column({
+    type: "enum",
+    enum: Role,
+    default: Role.User,
+  })
+  role: Role;
 
   @OneToMany(() => EventEntity, (event) => event.id, {
     nullable: false,
