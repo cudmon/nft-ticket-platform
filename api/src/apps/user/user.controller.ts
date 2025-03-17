@@ -2,6 +2,7 @@ import { CreateEvent } from "@/apps/event/event.dto";
 import { UserService } from "@/apps/user/user.service";
 import { EventService } from "@/apps/event/event.service";
 import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
+import { Role, Roles } from "@/common/decorators/roles.decorator";
 import {
   Body,
   ConflictException,
@@ -21,6 +22,7 @@ export class UserController {
     private readonly event: EventService
   ) {}
 
+  @Roles(Role.Admin)
   @Get()
   async findAll() {
     return await this.user.findAll();
@@ -36,6 +38,7 @@ export class UserController {
     return await this.event.findByUserId(id);
   }
 
+  @Roles(Role.Admin)
   @Post()
   async create(
     @Body()
@@ -79,6 +82,7 @@ export class UserController {
     return user;
   }
 
+  @Roles(Role.Admin)
   @Delete(":id")
   async delete(@Param("id") id: number) {
     const removed = await this.user.delete(id);
