@@ -1,7 +1,7 @@
 import { BaseEntity } from "@/models/base.entity";
 import { EventEntity } from "@/models/event.entity";
 import { ApiSchema } from "@nestjs/swagger";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity({
   name: "tickets",
@@ -23,6 +23,9 @@ export class TicketEntity extends BaseEntity {
 
   @ManyToOne(() => EventEntity, (event) => event.id, {
     nullable: false,
+  })
+  @JoinColumn({
+    name: "event_id",
   })
   event: EventEntity;
 }
