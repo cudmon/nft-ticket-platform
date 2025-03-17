@@ -16,6 +16,10 @@ export class CreateTicket {
   @IsNumber()
   @IsNotEmpty()
   event_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  total: number;
 }
 
 @ApiSchema({
