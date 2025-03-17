@@ -53,18 +53,6 @@ export class UserController {
     return this.user.create(user);
   }
 
-  @Post(":id/events")
-  async createEvent(
-    @Param("id") id: number,
-    @Body()
-    event: CreateEvent
-  ) {
-    return await this.event.create({
-      ...event,
-      owner_id: id,
-    });
-  }
-
   @Patch(":id")
   async update(
     @Param("id") id: number,
