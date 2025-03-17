@@ -1,5 +1,6 @@
 import { TicketService } from "@/apps/ticket/ticket.service";
 import { Public } from "@/common/decorators/public.decorator";
+import { CreateTicket, UpdateTicket } from "@/apps/ticket/ticket.dto";
 import {
   Body,
   Controller,
@@ -10,7 +11,6 @@ import {
   Patch,
   Post,
 } from "@nestjs/common";
-import { CreateTicket, UpdateTicket } from "./ticket.dto";
 
 @Controller("tickets")
 export class TicketController {
