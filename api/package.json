@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "nest start --watch",
     "build": "nest build",
-    "start:prod": "node dist/main",
+    "start": "node dist/main",
     "lint": "eslint --fix /**/*.ts"
   },
   "dependencies": {
