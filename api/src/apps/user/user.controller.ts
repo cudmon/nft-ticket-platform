@@ -50,9 +50,7 @@ export class UserController {
       throw new ConflictException("User already exists");
     }
 
-    return this.user.create({
-      ...user,
-    });
+    return this.user.create(user);
   }
 
   @Post(":id/events")

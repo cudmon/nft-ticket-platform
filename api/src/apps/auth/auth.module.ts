@@ -7,9 +7,11 @@ import { AuthService } from "@/apps/auth/auth.service";
 import { RolesGuard } from "@/common/guards/roles.guard";
 import { AuthController } from "@/apps/auth/auth.controller";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { HashModule } from "@/mods/hash/hash.module";
 
 @Module({
   imports: [
+    HashModule,
     UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

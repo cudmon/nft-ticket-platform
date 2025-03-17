@@ -1,9 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { UserService } from "@/apps/user/user.service";
+import { HashService } from "@/mods/hash/hash.service";
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly user: UserService) {}
+  constructor(
+    private readonly user: UserService,
+    private readonly hash: HashService
+  ) {}
 
   async me(id: number) {
     return await this.user.findOneById(id);
@@ -16,7 +20,7 @@ export class AuthService {
       return null;
     }
 
-    const valid = user.password === password;
+    const valid = await this.hash.compare(password, user.password);
 
     if (!valid) {
       return null;

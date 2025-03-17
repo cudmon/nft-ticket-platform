@@ -1,14 +1,16 @@
 import { Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { UserEntity } from "@/models/user.entity";
-import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
 import { InjectRepository } from "@nestjs/typeorm";
+import { HashService } from "@/mods/hash/hash.service";
+import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly users: Repository<UserEntity>
+    private readonly users: Repository<UserEntity>,
+    private readonly hash: HashService
   ) {}
 
   async findAll(): Promise<UserEntity[]> {
@@ -32,7 +34,12 @@ export class UserService {
   }
 
   async create(user: CreateUser): Promise<UserEntity> {
-    return this.users.save(this.users.create(user));
+    return this.users.save(
+      this.users.create({
+        ...user,
+        password: await this.hash.generate(user.password),
+      })
+    );
   }
 
   async update(id: number, user: UpdateUser): Promise<UserEntity | null> {
