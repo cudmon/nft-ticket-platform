@@ -1,6 +1,7 @@
 import { Request } from "express";
 import { JwtService } from "@nestjs/jwt";
 import { Reflector } from "@nestjs/core";
+import { Role } from "@/models/user.entity";
 import { IS_PUBLIC_KEY } from "@/common/decorators/public.decorator";
 import {
   CanActivate,
@@ -11,6 +12,7 @@ import {
 
 interface User {
   id: string;
+  role: Role;
 }
 
 @Injectable()
