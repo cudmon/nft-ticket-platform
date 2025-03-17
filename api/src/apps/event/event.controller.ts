@@ -4,6 +4,7 @@ import { CreateTicket } from "@/apps/ticket/ticket.dto";
 import { EventService } from "@/apps/event/event.service";
 import { TicketService } from "@/apps/ticket/ticket.service";
 import { Public } from "@/common/decorators/public.decorator";
+import { ContractService } from "@/mods/contract/contract.service";
 import {
   Body,
   ConflictException,
@@ -16,6 +17,7 @@ import {
   Patch,
   Post,
 } from "@nestjs/common";
+import { Session } from "@/common/decorators/session.decorator";
 
 @Controller("events")
 export class EventController {
@@ -49,7 +51,7 @@ export class EventController {
   }
 
   @Post()
-  async createEvent(@Body() data: CreateEvent) {
+  async createEvent(@Body() data: CreateEvent, @Session() user: Session) {
     const { title } = data;
 
     const event = await this.event.findOneByTitle(title);
@@ -58,7 +60,7 @@ export class EventController {
       throw new ConflictException("Event already exists");
     }
 
-    return await this.event.create(data);
+    return await this.event.create(data, user.id);
   }
 
   @Post(":id/tickets")
@@ -74,7 +76,10 @@ export class EventController {
     }
 
     return await this.ticket.createMany(
-      data.map((ticket) => ({ ...ticket, event_id: id }))
+      data.map((ticket) => ({
+        ...ticket,
+        event_id: id,
+      }))
     );
   }
 

@@ -30,9 +30,6 @@ export class CreateEvent {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsNumber()
-  owner_id: number;
 }
 
 @ApiSchema({

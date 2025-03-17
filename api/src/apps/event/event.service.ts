@@ -39,8 +39,13 @@ export class EventService {
     });
   }
 
-  async create(event: CreateEvent): Promise<EventEntity> {
-    return await this.events.save(this.events.create(event));
+  async create(event: CreateEvent, userId: number): Promise<EventEntity> {
+    return await this.events.save(
+      this.events.create({
+        ...event,
+        owner_id: userId,
+      })
+    );
   }
 
   async update(id: number, event: UpdateEvent): Promise<EventEntity | null> {
