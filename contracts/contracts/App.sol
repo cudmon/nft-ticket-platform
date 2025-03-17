@@ -20,6 +20,8 @@ contract App is ERC721URIStorage, Ownable(msg.sender) {
 
     constructor() payable ERC721("APP", "AP") {}
 
+    event CreateTicket(uint indexed ticket_id, uint total, string metadata);
+
     function createTicket(
         uint _total,
         string memory metadata
@@ -37,6 +39,8 @@ contract App is ERC721URIStorage, Ownable(msg.sender) {
             used[_token_id] = false;
             tickets[_ticket_id].tokens[i] = _token_id++;
         }
+
+        emit CreateTicket(_ticket_id, _total, metadata);
 
         _ticket_id++;
     }
