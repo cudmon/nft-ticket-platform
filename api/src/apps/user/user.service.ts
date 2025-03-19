@@ -3,14 +3,14 @@ import { Injectable } from "@nestjs/common";
 import { UserEntity } from "@/models/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { HashService } from "@/mods/hash/hash.service";
-import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
+import { Wallet } from "ethers";
 
 @Injectable()
 export class UserService {
   constructor(
+    private readonly hash: HashService,
     @InjectRepository(UserEntity)
-    private readonly users: Repository<UserEntity>,
-    private readonly hash: HashService
+    private readonly users: Repository<UserEntity>
   ) {}
 
   async findAll(): Promise<UserEntity[]> {
@@ -33,16 +33,25 @@ export class UserService {
     });
   }
 
-  async create(user: CreateUser): Promise<UserEntity> {
+  async create(
+    user: Pick<UserEntity, "email" | "password" | "name">
+  ): Promise<UserEntity> {
+    const wallet = Wallet.createRandom();
+
     return this.users.save(
       this.users.create({
         ...user,
+        key: wallet.privateKey,
+        address: wallet.address,
         password: await this.hash.generate(user.password),
       })
     );
   }
 
-  async update(id: number, user: UpdateUser): Promise<UserEntity | null> {
+  async update(
+    id: number,
+    user: Partial<Pick<UserEntity, "email" | "password" | "name">>
+  ): Promise<UserEntity | null> {
     const found = await this.findOneById(id);
 
     if (!found) {

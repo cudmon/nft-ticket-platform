@@ -44,12 +44,19 @@ export class UserEntity extends BaseEntity {
   })
   role: Role;
 
+  @Exclude()
   @Column({
     type: "varchar",
     length: 100,
-    nullable: true,
   })
   address: string;
+
+  @Exclude()
+  @Column({
+    type: "varchar",
+    length: 100,
+  })
+  key: string;
 
   @OneToMany(() => EventEntity, (event) => event.id, {
     nullable: false,

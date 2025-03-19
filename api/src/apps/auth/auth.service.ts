@@ -1,10 +1,18 @@
-import { Injectable } from "@nestjs/common";
+import { Wallet } from "ethers";
+import { JwtService } from "@nestjs/jwt";
 import { UserService } from "@/apps/user/user.service";
 import { HashService } from "@/mods/hash/hash.service";
+import { LoginDto, RegisterDto } from "@/apps/auth/auth.dto";
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly jwt: JwtService,
     private readonly user: UserService,
     private readonly hash: HashService
   ) {}
@@ -13,27 +21,41 @@ export class AuthService {
     return await this.user.findOneById(id);
   }
 
-  async login(email: string, password: string) {
-    const user = await this.user.findOneByEmail(email);
+  async login(data: LoginDto) {
+    const user = await this.user.findOneByEmail(data.email);
 
     if (!user) {
-      return null;
+      throw new UnauthorizedException("Invalid credentials");
     }
 
-    const valid = await this.hash.compare(password, user.password);
+    const valid = await this.hash.compare(data.password, user.password);
 
     if (!valid) {
-      return null;
+      return new UnauthorizedException("Invalid credentials");
     }
+    const token = this.jwt.sign({
+      id: user.id,
+    });
 
-    return user;
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      token,
+    };
   }
 
-  async register(email: string, password: string, name: string) {
+  async register(data: RegisterDto) {
+    const user = await this.user.findOneByEmail(data.email);
+
+    if (user) {
+      throw new ConflictException("User already exists");
+    }
+
     return await this.user.create({
-      email,
-      password,
-      name,
+      name: data.name,
+      email: data.email,
+      password: data.password,
     });
   }
 }
