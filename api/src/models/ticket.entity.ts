@@ -1,6 +1,6 @@
+import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
 import { EventEntity } from "@/models/event.entity";
-import { ApiSchema } from "@nestjs/swagger";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity({
@@ -20,6 +20,16 @@ export class TicketEntity extends BaseEntity {
     type: "float",
   })
   price: number;
+
+  @Column({
+    type: "int",
+  })
+  total: number;
+
+  @Column({
+    type: "boolean",
+  })
+  resalable: boolean;
 
   @Column()
   event_id: number;
