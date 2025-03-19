@@ -4,6 +4,7 @@ import { AuthModule } from "@/apps/auth/auth.module";
 import { UserModule } from "@/apps/user/user.module";
 import { TokenModule } from "@/apps/token/token.module";
 import { EventModule } from "@/apps/event/event.module";
+import { OrderModule } from "@/apps/order/order.module";
 import { TicketModule } from "@/apps/ticket/ticket.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
@@ -31,6 +32,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     TicketModule,
     TokenModule,
     UserModule,
+    OrderModule,
   ],
 })
 export class AppModule {}
