@@ -1,4 +1,3 @@
-import { CreateEvent } from "@/apps/event/event.dto";
 import { UserService } from "@/apps/user/user.service";
 import { EventService } from "@/apps/event/event.service";
 import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
