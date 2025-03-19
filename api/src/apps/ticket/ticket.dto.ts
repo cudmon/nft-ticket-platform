@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsNumber } from "class-validator";
 import { ApiSchema, PartialType } from "@nestjs/swagger";
 
 @ApiSchema({
@@ -20,6 +20,10 @@ export class CreateTicket {
   @IsNumber()
   @IsNotEmpty()
   total: number;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  resalable: boolean;
 }
 
 @ApiSchema({

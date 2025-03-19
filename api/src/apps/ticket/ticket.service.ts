@@ -37,10 +37,6 @@ export class TicketService {
     return await this.tickets.save(this.tickets.create(data));
   }
 
-  async createMany(data: CreateTicket[]): Promise<TicketEntity[]> {
-    return await this.tickets.save(this.tickets.create(data));
-  }
-
   async update(id: number, data: UpdateTicket): Promise<TicketEntity | null> {
     const found = await this.findOneById(id);
 
