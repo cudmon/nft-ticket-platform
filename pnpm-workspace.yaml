@@ -3,5 +3,10 @@ packages:
   - contracts
   - web
 onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@scarf/scarf'
+  - '@swc/core'
+  - bcrypt
   - keccak
   - secp256k1
+  - sharp
