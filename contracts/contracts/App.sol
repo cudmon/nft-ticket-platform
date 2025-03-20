@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 struct Ticket {
     uint id;
     uint total;
+    uint price;
     uint[] tokens;
     uint event_id;
 }
@@ -42,7 +43,12 @@ contract App is ERC721, Ownable(msg.sender) {
         });
     }
 
-    function add_ticket(uint event_id, uint id, uint total) external onlyOwner {
+    function add_ticket(
+        uint event_id,
+        uint id,
+        uint total,
+        uint price
+    ) external onlyOwner {
         require(events[event_id].owner != address(0), "Event does not exist");
 
         Event storage ev = events[event_id];
@@ -52,6 +58,7 @@ contract App is ERC721, Ownable(msg.sender) {
         tickets[id] = Ticket({
             id: id,
             total: total,
+            price: price,
             event_id: event_id,
             tokens: new uint[](0)
         });
@@ -90,8 +97,22 @@ contract App is ERC721, Ownable(msg.sender) {
         token.used = true;
     }
 
-    function resale_ticket(uint token_id, address to) external onlyOwner {
+    function resale_ticket(
+        uint event_id,
+        uint token_id,
+        uint price,
+        address to
+    ) external onlyOwner {
+        require(events[event_id].owner != address(0), "Event does not exist");
+
+        Event storage ev = events[event_id];
         Token storage token = tokens[token_id];
+
+        require(price > 0, "Price must be greater than 0");
+        require(
+            price <= tickets[token.ticket_id].price * ev.resale_rate,
+            "Price too high"
+        );
 
         require(token.owner == msg.sender, "You are not the ticket owner");
 
