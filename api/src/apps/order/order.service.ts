@@ -28,8 +28,6 @@ export class OrderService {
       throw new NotFoundException("Ticket not found");
     }
 
-    await this.contract.buyTicket(ticketId, amount, user.address);
-
     const order = this.orders.create({
       amount,
       user,

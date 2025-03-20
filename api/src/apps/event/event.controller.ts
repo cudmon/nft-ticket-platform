@@ -107,14 +107,6 @@ export class EventController {
       if (!tickets.length) {
         throw new ForbiddenException("Cannot publish event without tickets");
       }
-
-      for (const ticket of tickets) {
-        await this.contract.createTicket(
-          ticket.id,
-          ticket.total,
-          ticket.resalable
-        );
-      }
     }
 
     return await this.event.update(id, data);

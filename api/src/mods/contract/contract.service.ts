@@ -16,14 +16,4 @@ export class ContractService {
 
     this.contract = new Contract(address, abi, signer);
   }
-
-  async createTicket(id: number, total: number, resalable: boolean) {
-    const tx = await this.contract.createTicket(id, total, resalable);
-
-    await tx.wait();
-  }
-
-  async buyTicket(id: number, quantity: number, address: string) {
-    await this.contract.buyTicket(id, quantity, address);
-  }
 }
