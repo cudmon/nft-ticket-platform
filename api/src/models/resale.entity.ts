@@ -1,30 +1,20 @@
 import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
+import { UserEntity } from "@/models/user.entity";
 import { TicketEntity } from "@/models/ticket.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity({
-  name: "Resales",
+  name: "resales",
 })
 @ApiSchema({
-  name: "Resale",
+  name: "resale",
 })
 export class ResaleEntity extends BaseEntity {
-  @Column({
-    type: "enum",
-    enum: ["pending", "success"],
-    default: "pending",
-  })
-  status: "pending" | "success";
-
-  @Column({
-    type: "int",
-  })
+  @Column("int")
   price: number;
 
-  @Column({
-    type: "int",
-  })
+  @Column("int")
   token_id: number;
 
   @Column()
@@ -33,6 +23,12 @@ export class ResaleEntity extends BaseEntity {
   @Column()
   ticket_id: number;
 
+  @Column()
+  seller_id: number;
+
+  @Column()
+  buyer_id: number;
+
   @ManyToOne(() => TicketEntity, (ticket) => ticket.id, {
     nullable: false,
   })
@@ -40,4 +36,16 @@ export class ResaleEntity extends BaseEntity {
     name: "ticket_id",
   })
   ticket: TicketEntity;
+
+  @ManyToOne(() => UserEntity, (user) => user.id, {
+    nullable: false,
+  })
+  @JoinColumn({ name: "seller_id" })
+  seller: UserEntity;
+
+  @ManyToOne(() => UserEntity, (user) => user.id, {
+    nullable: true,
+  })
+  @JoinColumn({ name: "buyer_id" })
+  buyer: UserEntity;
 }
