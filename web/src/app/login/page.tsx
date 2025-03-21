@@ -1,5 +1,7 @@
-export default function page() {
-    return (
-        <h1>Hello world</h1>
-    )
+import { Input } from '@mantine/core';
+
+export default function Page() {
+  return (
+    <Input placeholder='Test Button'/>
+  );
 }

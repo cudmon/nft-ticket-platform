@@ -1,3 +1,7 @@
+import { Input } from '@mantine/core';
+
 export default function Page() {
-  return <div>Home</div>;
+  return (
+    <Input placeholder='Test Input'/>
+  );
 }
