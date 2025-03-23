@@ -1,10 +1,8 @@
-import { CreateTicket } from "@/apps/ticket/ticket.dto";
 import { EventService } from "@/apps/event/event.service";
 import { TicketService } from "@/apps/ticket/ticket.service";
 import { Public } from "@/common/decorators/public.decorator";
 import { Session } from "@/common/decorators/session.decorator";
 import { CreateEvent, UpdateEvent } from "@/apps/event/event.dto";
-import { ContractService } from "@/mods/contract/contract.service";
 import {
   Body,
   ConflictException,
@@ -22,8 +20,7 @@ import {
 export class EventController {
   constructor(
     private readonly event: EventService,
-    private readonly ticket: TicketService,
-    private readonly contract: ContractService
+    private readonly ticket: TicketService
   ) {}
 
   @Public()
@@ -50,6 +47,12 @@ export class EventController {
     return await this.ticket.findByEventId(id);
   }
 
+  @Public()
+  @Get(":id/resales")
+  async findResales(@Param("id") id: number) {
+    return [];
+  }
+
   @Post()
   async createEvent(@Body() data: CreateEvent, @Session() user: Session) {
     const { title } = data;
@@ -61,24 +64,6 @@ export class EventController {
     }
 
     return await this.event.create(data, user.id);
-  }
-
-  @Post(":id/tickets")
-  async createTickets(
-    @Param("id") id: number,
-    @Body()
-    data: CreateTicket
-  ) {
-    const event = await this.event.findOneById(id);
-
-    if (!event) {
-      throw new NotFoundException("Event not found");
-    }
-
-    return await this.ticket.create({
-      ...data,
-      event_id: id,
-    });
   }
 
   @Patch(":id")

@@ -1,31 +1,16 @@
 import { UserService } from "@/apps/user/user.service";
 import { EventService } from "@/apps/event/event.service";
-import { CreateUser, UpdateUser } from "@/apps/user/user.dto";
-import { Role, Roles } from "@/common/decorators/roles.decorator";
-import {
-  Body,
-  ConflictException,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Patch,
-  Post,
-} from "@nestjs/common";
+import { OrderService } from "@/apps/order/order.service";
+import { Controller, forwardRef, Get, Inject, Param } from "@nestjs/common";
 
 @Controller("users")
 export class UserController {
   constructor(
     private readonly user: UserService,
-    private readonly event: EventService
+    private readonly event: EventService,
+    @Inject(forwardRef(() => OrderService))
+    private readonly order: OrderService
   ) {}
-
-  @Roles(Role.Admin)
-  @Get()
-  async findAll() {
-    return await this.user.findAll();
-  }
 
   @Get(":id")
   async findOne(@Param("id") id: number) {
@@ -37,45 +22,8 @@ export class UserController {
     return await this.event.findByUserId(id);
   }
 
-  @Roles(Role.Admin)
-  @Post()
-  async create(
-    @Body()
-    user: CreateUser
-  ) {
-    const found = await this.user.findOneByEmail(user.email);
-
-    if (found) {
-      throw new ConflictException("User already exists");
-    }
-
-    return this.user.create(user);
-  }
-
-  @Patch(":id")
-  async update(
-    @Param("id") id: number,
-    @Body()
-    data: UpdateUser
-  ) {
-    const user = await this.user.update(id, data);
-
-    if (!user) {
-      throw new NotFoundException("User not found");
-    }
-
-    return user;
-  }
-
-  @Roles(Role.Admin)
-  @Delete(":id")
-  async delete(@Param("id") id: number) {
-    const removed = await this.user.delete(id);
-
-    if (!removed) {
-      throw new NotFoundException("User not found");
-    }
-
-    return removed;
+  @Get(":id/orders")
+  async findOrders(@Param("id") id: number) {
+    return await this.order.findByUserId(id);
   }
 }

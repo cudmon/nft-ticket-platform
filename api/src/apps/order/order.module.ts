@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { OrderEntity } from "@/models/order.entity";
 import { UserModule } from "@/apps/user/user.module";
@@ -11,7 +11,7 @@ import { ContractModule } from "@/mods/contract/contract.module";
   imports: [
     ContractModule,
     TypeOrmModule.forFeature([OrderEntity]),
-    UserModule,
+    forwardRef(() => UserModule),
     TicketModule,
   ],
   controllers: [OrderController],

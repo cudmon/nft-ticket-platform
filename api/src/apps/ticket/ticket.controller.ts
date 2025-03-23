@@ -1,11 +1,9 @@
 import { TicketService } from "@/apps/ticket/ticket.service";
-import { Public } from "@/common/decorators/public.decorator";
 import { CreateTicket, UpdateTicket } from "@/apps/ticket/ticket.dto";
 import {
   Body,
   Controller,
   Delete,
-  Get,
   NotFoundException,
   Param,
   Patch,
@@ -15,24 +13,6 @@ import {
 @Controller("tickets")
 export class TicketController {
   constructor(private readonly ticket: TicketService) {}
-
-  @Public()
-  @Get()
-  async findAll() {
-    return await this.ticket.findAll();
-  }
-
-  @Public()
-  @Get(":id")
-  async findOne(@Param("id") id: number) {
-    const ticket = await this.ticket.findOneById(id);
-
-    if (!ticket) {
-      throw new NotFoundException("Ticket not found");
-    }
-
-    return ticket;
-  }
 
   @Post()
   async create(@Body() data: CreateTicket) {

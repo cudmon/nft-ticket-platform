@@ -1,20 +1,34 @@
 import { Repository } from "typeorm";
-import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OrderEntity } from "@/models/order.entity";
 import { UserService } from "@/apps/user/user.service";
 import { TicketService } from "@/apps/ticket/ticket.service";
-import { ContractService } from "@/mods/contract/contract.service";
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectRepository(OrderEntity)
     private readonly orders: Repository<OrderEntity>,
-    private readonly contract: ContractService,
+    @Inject(forwardRef(() => UserService))
     private readonly user: UserService,
     private readonly ticket: TicketService
   ) {}
+
+  async findByUserId(id: number) {
+    return await this.orders.find({
+      where: {
+        user: {
+          id: id,
+        },
+      },
+    });
+  }
 
   async createOrder(userId: number, ticketId: number, amount: number) {
     const user = await this.user.findOneById(userId);
@@ -29,6 +43,7 @@ export class OrderService {
     }
 
     const order = this.orders.create({
+      price: ticket.price * amount,
       amount,
       user,
     });

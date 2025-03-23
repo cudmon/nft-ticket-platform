@@ -16,6 +16,12 @@ export class OrderEntity extends BaseEntity {
   })
   amount: number;
 
+  @Column({
+    type: "varchar",
+    length: 255,
+  })
+  price: number;
+
   @ManyToOne(() => UserEntity, (user) => user.id, {
     nullable: false,
   })

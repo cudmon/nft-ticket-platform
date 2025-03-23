@@ -1,5 +1,5 @@
 import { ApiSchema } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 @ApiSchema({
   name: "Login",
@@ -24,6 +24,7 @@ export class RegisterDto {
   @IsNotEmpty()
   password: string;
 
-  @IsNotEmpty()
-  name: string;
+  @IsString()
+  @IsOptional()
+  name?: string;
 }

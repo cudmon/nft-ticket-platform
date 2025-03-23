@@ -6,13 +6,12 @@ import { TokenModule } from "@/apps/token/token.module";
 import { EventModule } from "@/apps/event/event.module";
 import { OrderModule } from "@/apps/order/order.module";
 import { TicketModule } from "@/apps/ticket/ticket.module";
+import { ResaleModule } from "@/apps/resale/resale.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -28,11 +27,12 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
       }),
     }),
     AuthModule,
-    EventModule,
-    TicketModule,
-    TokenModule,
     UserModule,
+    EventModule,
     OrderModule,
+    TokenModule,
+    ResaleModule,
+    TicketModule,
   ],
 })
 export class AppModule {}

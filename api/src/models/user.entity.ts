@@ -34,15 +34,9 @@ export class UserEntity extends BaseEntity {
   @Column({
     type: "varchar",
     length: 100,
+    nullable: true,
   })
   name: string;
-
-  @Column({
-    type: "enum",
-    enum: Role,
-    default: Role.User,
-  })
-  role: Role;
 
   @Exclude()
   @Column({
