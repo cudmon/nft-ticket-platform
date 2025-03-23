@@ -1,7 +1,7 @@
 import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
 import { UserEntity } from "@/models/user.entity";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity({
   name: "orders",
@@ -24,6 +24,9 @@ export class OrderEntity extends BaseEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.id, {
     nullable: false,
+  })
+  @JoinColumn({
+    name: "user_id",
   })
   user: UserEntity;
 }
