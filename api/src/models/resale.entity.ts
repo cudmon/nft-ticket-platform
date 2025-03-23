@@ -1,9 +1,9 @@
 import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
 import { UserEntity } from "@/models/user.entity";
+import { OrderEntity } from "@/models/order.entity";
 import { TicketEntity } from "@/models/ticket.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { OrderEntity } from "./order.entity";
 
 @Entity({
   name: "resales",
@@ -21,9 +21,6 @@ export class ResaleEntity extends BaseEntity {
 
   @Column("int")
   token_id: number;
-
-  @Column()
-  event_id: number;
 
   @Column()
   ticket_id: number;

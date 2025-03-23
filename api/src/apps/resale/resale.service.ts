@@ -9,4 +9,19 @@ export class ResaleService {
     @InjectRepository(ResaleEntity)
     private readonly resales: Repository<ResaleEntity>
   ) {}
+
+  async findByEventId(id: number): Promise<ResaleEntity[]> {
+    return this.resales.find({
+      relations: {
+        ticket: {
+          event: true,
+        },
+      },
+      where: {
+        ticket: {
+          event: { id },
+        },
+      },
+    });
+  }
 }

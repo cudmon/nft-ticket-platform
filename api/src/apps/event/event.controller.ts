@@ -1,5 +1,6 @@
 import { EventService } from "@/apps/event/event.service";
 import { TicketService } from "@/apps/ticket/ticket.service";
+import { ResaleService } from "@/apps/resale/resale.service";
 import { Public } from "@/common/decorators/public.decorator";
 import { Session } from "@/common/decorators/session.decorator";
 import { CreateEvent, UpdateEvent } from "@/apps/event/event.dto";
@@ -20,7 +21,8 @@ import {
 export class EventController {
   constructor(
     private readonly event: EventService,
-    private readonly ticket: TicketService
+    private readonly ticket: TicketService,
+    private readonly resale: ResaleService
   ) {}
 
   @Public()
@@ -50,7 +52,7 @@ export class EventController {
   @Public()
   @Get(":id/resales")
   async findResales(@Param("id") id: number) {
-    return [];
+    return await this.resale.findByEventId(id);
   }
 
   @Post()
