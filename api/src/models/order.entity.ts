@@ -1,9 +1,10 @@
-import { ApiSchema } from "@nestjs/swagger";
+import { ApiHideProperty, ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
 import { UserEntity } from "@/models/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { ResaleEntity } from "./resale.entity";
 import { TicketEntity } from "./ticket.entity";
+import { Exclude } from "class-transformer";
 
 @Entity({
   name: "orders",
@@ -25,6 +26,8 @@ export class OrderEntity extends BaseEntity {
   })
   price: number;
 
+  @Exclude()
+  @ApiHideProperty()
   @ManyToOne(() => UserEntity, (user) => user.id, {
     nullable: false,
   })
@@ -33,6 +36,8 @@ export class OrderEntity extends BaseEntity {
   })
   user: UserEntity;
 
+  @Exclude()
+  @ApiHideProperty()
   @ManyToOne(() => TicketEntity, (ticket) => ticket.id, {
     nullable: false,
   })
@@ -41,6 +46,8 @@ export class OrderEntity extends BaseEntity {
   })
   ticket: TicketEntity;
 
+  @Exclude()
+  @ApiHideProperty()
   @ManyToOne(() => ResaleEntity, (resale) => resale.id, {
     nullable: true,
   })

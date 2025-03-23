@@ -1,6 +1,6 @@
 import { CreateOrder } from "@/apps/order/order.dto";
+import { Body, Controller, Post } from "@nestjs/common";
 import { OrderService } from "@/apps/order/order.service";
-import { Body, Controller, Get, Post } from "@nestjs/common";
 import { Session } from "@/common/decorators/session.decorator";
 
 @Controller("orders")

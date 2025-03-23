@@ -15,7 +15,6 @@ struct Ticket {
 struct Event {
     uint id;
     address owner;
-    uint resale_rate;
 }
 
 struct Token {
@@ -35,12 +34,8 @@ contract App is ERC721, Ownable(msg.sender) {
 
     constructor() ERC721("APP", "AP") {}
 
-    function create_event(uint id, uint resale_rate) external onlyOwner {
-        events[id] = Event({
-            id: id,
-            owner: msg.sender,
-            resale_rate: resale_rate
-        });
+    function create_event(uint id) external onlyOwner {
+        events[id] = Event({id: id, owner: msg.sender});
     }
 
     function add_ticket(
@@ -105,15 +100,9 @@ contract App is ERC721, Ownable(msg.sender) {
     ) external onlyOwner {
         require(events[event_id].owner != address(0), "Event does not exist");
 
-        Event storage ev = events[event_id];
         Token storage token = tokens[token_id];
 
         require(price > 0, "Price must be greater than 0");
-        require(
-            price <= tickets[token.ticket_id].price * ev.resale_rate,
-            "Price too high"
-        );
-
         require(token.owner == msg.sender, "You are not the ticket owner");
 
         token.owner = to;

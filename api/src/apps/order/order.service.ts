@@ -46,6 +46,7 @@ export class OrderService {
       price: ticket.price * amount,
       amount,
       user,
+      ticket,
     });
 
     return await this.orders.save(order);

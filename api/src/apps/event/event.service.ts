@@ -12,7 +12,11 @@ export class EventService {
   ) {}
 
   async findAll(): Promise<EventEntity[]> {
-    return await this.events.find();
+    return await this.events.find({
+      where: {
+        published: true,
+      },
+    });
   }
 
   async findByUserId(id: number): Promise<EventEntity[]> {

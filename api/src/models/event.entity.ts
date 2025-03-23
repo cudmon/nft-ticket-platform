@@ -20,6 +20,7 @@ export class EventEntity extends BaseEntity {
 
   @Column({
     type: "timestamptz",
+    nullable: true,
   })
   date: Date;
 
