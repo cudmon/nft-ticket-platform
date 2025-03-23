@@ -3,6 +3,7 @@ import { BaseEntity } from "@/models/base.entity";
 import { UserEntity } from "@/models/user.entity";
 import { TicketEntity } from "@/models/ticket.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { OrderEntity } from "./order.entity";
 
 @Entity({
   name: "resales",
@@ -11,7 +12,11 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
   name: "resale",
 })
 export class ResaleEntity extends BaseEntity {
-  @Column("int")
+  @Column({
+    type: "decimal",
+    precision: 10,
+    scale: 2,
+  })
   price: number;
 
   @Column("int")
@@ -26,8 +31,13 @@ export class ResaleEntity extends BaseEntity {
   @Column()
   seller_id: number;
 
-  @Column()
-  buyer_id: number;
+  @ManyToOne(() => OrderEntity, (order) => order.id, {
+    nullable: true,
+  })
+  @JoinColumn({
+    name: "order_id",
+  })
+  order: OrderEntity;
 
   @ManyToOne(() => TicketEntity, (ticket) => ticket.id, {
     nullable: false,
@@ -42,10 +52,4 @@ export class ResaleEntity extends BaseEntity {
   })
   @JoinColumn({ name: "seller_id" })
   seller: UserEntity;
-
-  @ManyToOne(() => UserEntity, (user) => user.id, {
-    nullable: true,
-  })
-  @JoinColumn({ name: "buyer_id" })
-  buyer: UserEntity;
 }

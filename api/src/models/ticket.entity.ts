@@ -36,6 +36,7 @@ export class TicketEntity extends BaseEntity {
 
   @ManyToOne(() => EventEntity, (event) => event.id, {
     nullable: false,
+    onDelete: "CASCADE",
   })
   @JoinColumn({
     name: "event_id",

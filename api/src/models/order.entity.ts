@@ -2,6 +2,8 @@ import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
 import { UserEntity } from "@/models/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { ResaleEntity } from "./resale.entity";
+import { TicketEntity } from "./ticket.entity";
 
 @Entity({
   name: "orders",
@@ -17,8 +19,9 @@ export class OrderEntity extends BaseEntity {
   amount: number;
 
   @Column({
-    type: "varchar",
-    length: 255,
+    type: "decimal",
+    precision: 10,
+    scale: 2,
   })
   price: number;
 
@@ -29,4 +32,20 @@ export class OrderEntity extends BaseEntity {
     name: "user_id",
   })
   user: UserEntity;
+
+  @ManyToOne(() => TicketEntity, (ticket) => ticket.id, {
+    nullable: false,
+  })
+  @JoinColumn({
+    name: "ticket_id",
+  })
+  ticket: TicketEntity;
+
+  @ManyToOne(() => ResaleEntity, (resale) => resale.id, {
+    nullable: true,
+  })
+  @JoinColumn({
+    name: "resale_id",
+  })
+  resale: ResaleEntity;
 }

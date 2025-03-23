@@ -55,6 +55,7 @@ export class EventEntity extends BaseEntity {
   @ApiHideProperty()
   @OneToMany(() => TicketEntity, (ticket) => ticket.id, {
     nullable: false,
+    onDelete: "CASCADE",
   })
   tickets: TicketEntity[];
 }
