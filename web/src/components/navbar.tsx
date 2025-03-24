@@ -1,5 +1,6 @@
 import { Flex, Input, Button } from "@mantine/core";
-import { Search, ShoppingCart } from "lucide-react";
+import { Search } from "lucide-react";
+import Link from "next/link";
 
 export default function Navbar() {
     return (
@@ -23,11 +24,10 @@ export default function Navbar() {
                 <Input placeholder="Search events.." 
                       leftSection={<Search/>}
                       size='md'/>
-                <Button color='black'
-                        size='md'>
-                          <ShoppingCart />
-                </Button>
-                <Button size='md'>Sign In</Button>
+                
+                <Link href={'/signin'}>
+                  <Button size='md'>Sign In</Button>
+                </Link>
 
               </Flex>
 
