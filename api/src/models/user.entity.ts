@@ -4,6 +4,7 @@ import { BaseEntity } from "@/models/base.entity";
 import { EventEntity } from "@/models/event.entity";
 import { Column, Entity, OneToMany } from "typeorm";
 import { OrderEntity } from "@/models/order.entity";
+import { TokenEntity } from "@/models/token.entity";
 
 export enum Role {
   User = "user",
@@ -61,4 +62,9 @@ export class UserEntity extends BaseEntity {
     nullable: false,
   })
   orders: OrderEntity[];
+
+  @OneToMany(() => TokenEntity, (token) => token.id, {
+    nullable: false,
+  })
+  tokens: TokenEntity[];
 }

@@ -43,6 +43,13 @@ export class EventEntity extends BaseEntity {
   })
   published: boolean;
 
+  @Column({
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  address: string;
+
   @Column()
   owner_id: number;
 

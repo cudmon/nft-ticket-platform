@@ -2,6 +2,7 @@ import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
 import { UserEntity } from "@/models/user.entity";
 import { OrderEntity } from "@/models/order.entity";
+import { TokenEntity } from "@/models/token.entity";
 import { TicketEntity } from "@/models/ticket.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
@@ -9,7 +10,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
   name: "resales",
 })
 @ApiSchema({
-  name: "resale",
+  name: "Resale",
 })
 export class ResaleEntity extends BaseEntity {
   @Column({
@@ -18,9 +19,6 @@ export class ResaleEntity extends BaseEntity {
     scale: 2,
   })
   price: number;
-
-  @Column("int")
-  token_id: number;
 
   @Column()
   ticket_id: number;
@@ -49,4 +47,10 @@ export class ResaleEntity extends BaseEntity {
   })
   @JoinColumn({ name: "seller_id" })
   seller: UserEntity;
+
+  @ManyToOne(() => TokenEntity, (token) => token.id, {
+    nullable: true,
+  })
+  @JoinColumn({ name: "token_id" })
+  token: TokenEntity;
 }
