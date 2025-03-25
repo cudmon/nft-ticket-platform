@@ -45,8 +45,6 @@ export class EventService implements OnModuleInit {
 
   private async listenForNewContracts() {
     this.factory.on("New_Contract", async (id: string, address: string) => {
-      console.log(`New contract created at ${address}`);
-
       await this.events.update(
         {
           id: parseInt(id),

@@ -59,8 +59,6 @@ export class TicketService {
 
     const ticket = await this.tickets.save(this.tickets.create(data));
 
-    console.log(ticket);
-
     const res = await contract.add_ticket(
       ticket.id,
       ticket.total,
