@@ -8,6 +8,7 @@ import { OrderModule } from "@/modules/order/order.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TicketModule } from "@/modules/ticket/ticket.module";
 import { ResaleModule } from "@/modules/resale/resale.module";
+import { WalletModule } from "@/modules/wallet/wallet.module";
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ResaleModule } from "@/modules/resale/resale.module";
     TokenModule,
     ResaleModule,
     TicketModule,
+    WalletModule,
   ],
 })
 export class AppModule {}

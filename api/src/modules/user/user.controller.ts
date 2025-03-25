@@ -1,11 +1,10 @@
 import { EventService } from "@/modules/event/event.service";
-import { OrderService } from "@/modules/order/order.service";
 import { Controller, forwardRef, Get, Inject, Param } from "@nestjs/common";
 
 @Controller("users")
 export class UserController {
   constructor(
-    @Inject(forwardRef(() => OrderService))
+    @Inject(forwardRef(() => EventService))
     private readonly event: EventService
   ) {}
 
