@@ -1,17 +1,20 @@
-import { UserService } from "@/modules/user/user.service";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Repository } from "typeorm";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { TokenEntity } from "@/models/token.entity";
 
 @Injectable()
 export class TokenService {
-  constructor(private readonly user: UserService) {}
+  constructor(
+    @InjectRepository(TokenEntity)
+    private readonly tokens: Repository<TokenEntity>
+  ) {}
 
-  async findByUserId(userId: number) {
-    const user = await this.user.findOneById(userId);
-
-    if (!user) {
-      throw new NotFoundException("User not found");
-    }
-
-    return [];
+  async findByWallet(address: string) {
+    return this.tokens.find({
+      where: {
+        address,
+      },
+    });
   }
 }

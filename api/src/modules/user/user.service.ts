@@ -34,13 +34,9 @@ export class UserService {
     email: string;
     password: string;
   }): Promise<UserEntity> {
-    const wallet = Wallet.createRandom();
-
     return this.users.save(
       this.users.create({
         ...user,
-        key: wallet.privateKey,
-        address: wallet.address,
         password: await this.hash.generate(user.password),
       })
     );

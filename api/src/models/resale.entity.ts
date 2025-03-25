@@ -1,6 +1,5 @@
 import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
-import { UserEntity } from "@/models/user.entity";
 import { OrderEntity } from "@/models/order.entity";
 import { TokenEntity } from "@/models/token.entity";
 import { TicketEntity } from "@/models/ticket.entity";
@@ -20,12 +19,6 @@ export class ResaleEntity extends BaseEntity {
   })
   price: number;
 
-  @Column()
-  ticket_id: number;
-
-  @Column()
-  seller_id: number;
-
   @ManyToOne(() => OrderEntity, (order) => order.id, {
     nullable: true,
   })
@@ -41,12 +34,6 @@ export class ResaleEntity extends BaseEntity {
     name: "ticket_id",
   })
   ticket: TicketEntity;
-
-  @ManyToOne(() => UserEntity, (user) => user.id, {
-    nullable: false,
-  })
-  @JoinColumn({ name: "seller_id" })
-  seller: UserEntity;
 
   @ManyToOne(() => TokenEntity, (token) => token.id, {
     nullable: true,

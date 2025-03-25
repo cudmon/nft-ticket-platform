@@ -39,32 +39,8 @@ export class UserEntity extends BaseEntity {
   })
   name: string;
 
-  @Exclude()
-  @Column({
-    type: "varchar",
-    length: 100,
-  })
-  address: string;
-
-  @Exclude()
-  @Column({
-    type: "varchar",
-    length: 100,
-  })
-  key: string;
-
   @OneToMany(() => EventEntity, (event) => event.id, {
     nullable: false,
   })
   events: EventEntity[];
-
-  @OneToMany(() => OrderEntity, (order) => order.id, {
-    nullable: false,
-  })
-  orders: OrderEntity[];
-
-  @OneToMany(() => TokenEntity, (token) => token.id, {
-    nullable: false,
-  })
-  tokens: TokenEntity[];
 }

@@ -26,15 +26,11 @@ export class OrderEntity extends BaseEntity {
   })
   price: number;
 
-  @Exclude()
-  @ApiHideProperty()
-  @ManyToOne(() => UserEntity, (user) => user.id, {
-    nullable: false,
+  @Column({
+    type: "varchar",
+    length: 255,
   })
-  @JoinColumn({
-    name: "user_id",
-  })
-  user: UserEntity;
+  address: string;
 
   @Exclude()
   @ApiHideProperty()

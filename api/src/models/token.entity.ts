@@ -18,9 +18,11 @@ export class TokenEntity extends BaseEntity {
   })
   nft_id: number;
 
-  @JoinColumn({ name: "owner_id" })
-  @ManyToOne(() => UserEntity, (user) => user.tokens)
-  owner: UserEntity;
+  @Column({
+    type: "varchar",
+    length: 255,
+  })
+  address: string;
 
   @JoinColumn({ name: "ticket_id" })
   @ManyToOne(() => TicketEntity, (ticket) => ticket.tokens)

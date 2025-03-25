@@ -4,12 +4,9 @@ import { Public } from "@/common/decorators/public.decorator";
 import { TicketService } from "@/modules/ticket/ticket.service";
 import { ResaleService } from "@/modules/resale/resale.service";
 import { Session } from "@/common/decorators/session.decorator";
-import { ContractFactory, JsonRpcProvider, Wallet } from "ethers";
+import { Contract, ContractFactory, JsonRpcProvider, Wallet } from "ethers";
 import { CreateEvent, UpdateEvent } from "@/modules/event/event.dto";
-import {
-  abi,
-  bytecode,
-} from "@nft-ticket/contracts/artifacts/contracts/Event.sol/Event.json";
+import { abi } from "@nft-ticket/contracts/artifacts/contracts/Factory.sol/Factory.json";
 import {
   Body,
   ConflictException,
@@ -83,13 +80,15 @@ export class EventController {
       this.PROVIDER
     );
 
-    const contract = new ContractFactory(abi, bytecode, wallet);
+    const contract = new Contract(
+      this.config.get("CONTRACT_FACTORY_ADDRESS") as string,
+      abi,
+      wallet
+    );
 
-    const deployed = await contract.deploy(event.title, String(event.id));
+    await contract.createEvent(event.title, String(event.id));
 
-    return this.event.update(event.id, {
-      address: await deployed.getAddress(),
-    });
+    return event;
   }
 
   @Patch(":id")
