@@ -4,10 +4,12 @@ import { Public } from "@/common/decorators/public.decorator";
 import { TicketService } from "@/modules/ticket/ticket.service";
 import { ResaleService } from "@/modules/resale/resale.service";
 import { Session } from "@/common/decorators/session.decorator";
-import { Contract, ContractFactory, JsonRpcProvider, Wallet } from "ethers";
+import { Contract, JsonRpcProvider, Wallet } from "ethers";
 import { CreateEvent, UpdateEvent } from "@/modules/event/event.dto";
 import { abi } from "@nft-ticket/contracts/artifacts/contracts/Factory.sol/Factory.json";
+import { abi as ff } from "@nft-ticket/contracts/artifacts/contracts/Event.sol/Event.json";
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -37,6 +39,27 @@ export class EventController {
   @Get()
   async findAll() {
     return await this.event.findAll();
+  }
+
+  @Get("999")
+  async test() {
+    const wallet = new Wallet(
+      this.config.get("WALLET_PRIVATE_KEY") as string,
+      this.PROVIDER
+    );
+
+    const contract = new Contract(
+      "0xa16E02E87b7454126E5E10d957A927A7F5B5d2be",
+      ff,
+      wallet
+    );
+    try {
+      return await contract.buy_ticket(13, 10, {
+        value: 100,
+      });
+    } catch (e: any) {
+      throw new BadRequestException(e.revert.args[0]);
+    }
   }
 
   @Public()
