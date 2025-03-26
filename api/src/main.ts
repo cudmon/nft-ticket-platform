@@ -14,6 +14,8 @@ async function bootstrap() {
     })
   );
 
+  app.enableCors();
+
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   app.enableCors();
