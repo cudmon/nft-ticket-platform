@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@mantine/core": "^7.17.2",
+    "@mantine/dates": "^7.17.2",
     "@mantine/hooks": "^7.17.2",
+    "dayjs": "^1.11.13",
     "lucide-react": "^0.483.0",
     "next": "^15.2.1",
     "react": "^19.0.0",
