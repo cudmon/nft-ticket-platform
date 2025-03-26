@@ -86,14 +86,14 @@ export class EventService implements OnModuleInit {
 
     contract.on(
       "Ticket_Bought",
-      async (ticket_id: number, to: string, amount) => {
+      async (ticket_id: BigInt, to: string, amount: BigInt) => {
         await this.orders.save(
           this.orders.create({
             ticket: {
-              id: ticket_id,
+              id: Number(ticket_id),
             },
             address: to,
-            amount,
+            amount: Number(amount),
           })
         );
       }
@@ -101,13 +101,13 @@ export class EventService implements OnModuleInit {
 
     contract.on(
       "Ticket_Minted",
-      async (token_id: number, ticket_id: number, to: string) => {
+      async (token_id: BigInt, ticket_id: BigInt, to: string) => {
         await this.tokens.save(
           this.tokens.create({
             address: to,
-            nft_id: token_id,
+            nft_id: Number(token_id),
             ticket: {
-              id: ticket_id,
+              id: Number(ticket_id),
             },
           })
         );
@@ -211,3 +211,8 @@ export class EventService implements OnModuleInit {
     return true;
   }
 }
+
+// Add a toJSON method to the BigInt prototype
+(BigInt.prototype as any).toJSON = function () {
+  return Number(this);
+};

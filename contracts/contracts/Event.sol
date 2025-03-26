@@ -19,7 +19,7 @@ struct Resale {
     uint token_id;
 }
 
-contract Event is ERC721, Ownable(msg.sender) {
+contract Event is ERC721, Ownable(tx.origin) {
     mapping(uint => Ticket) public tickets;
     mapping(uint => Resale) public resales;
 

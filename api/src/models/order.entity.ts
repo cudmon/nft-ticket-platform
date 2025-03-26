@@ -20,13 +20,6 @@ export class OrderEntity extends BaseEntity {
   amount: number;
 
   @Column({
-    type: "decimal",
-    precision: 10,
-    scale: 2,
-  })
-  price: number;
-
-  @Column({
     type: "varchar",
     length: 255,
   })
