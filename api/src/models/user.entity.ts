@@ -4,6 +4,7 @@ import { BaseEntity } from "@/models/base.entity";
 import { EventEntity } from "@/models/event.entity";
 import { Column, Entity, OneToMany } from "typeorm";
 import { OrderEntity } from "@/models/order.entity";
+import { TokenEntity } from "@/models/token.entity";
 
 export enum Role {
   User = "user",
@@ -38,27 +39,8 @@ export class UserEntity extends BaseEntity {
   })
   name: string;
 
-  @Exclude()
-  @Column({
-    type: "varchar",
-    length: 100,
-  })
-  address: string;
-
-  @Exclude()
-  @Column({
-    type: "varchar",
-    length: 100,
-  })
-  key: string;
-
   @OneToMany(() => EventEntity, (event) => event.id, {
     nullable: false,
   })
   events: EventEntity[];
-
-  @OneToMany(() => OrderEntity, (order) => order.id, {
-    nullable: false,
-  })
-  orders: OrderEntity[];
 }

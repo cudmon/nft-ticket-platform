@@ -1,13 +1,14 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthModule } from "@/apps/auth/auth.module";
-import { UserModule } from "@/apps/user/user.module";
-import { TokenModule } from "@/apps/token/token.module";
-import { EventModule } from "@/apps/event/event.module";
-import { OrderModule } from "@/apps/order/order.module";
-import { TicketModule } from "@/apps/ticket/ticket.module";
-import { ResaleModule } from "@/apps/resale/resale.module";
+import { AuthModule } from "@/modules/auth/auth.module";
+import { UserModule } from "@/modules/user/user.module";
+import { TokenModule } from "@/modules/token/token.module";
+import { EventModule } from "@/modules/event/event.module";
+import { OrderModule } from "@/modules/order/order.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { TicketModule } from "@/modules/ticket/ticket.module";
+import { ResaleModule } from "@/modules/resale/resale.module";
+import { WalletModule } from "@/modules/wallet/wallet.module";
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     TokenModule,
     ResaleModule,
     TicketModule,
+    WalletModule,
   ],
 })
 export class AppModule {}

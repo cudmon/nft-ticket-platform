@@ -1,10 +1,10 @@
-import { ApiHideProperty, ApiSchema } from "@nestjs/swagger";
-import { BaseEntity } from "@/models/base.entity";
-import { UserEntity } from "@/models/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { ResaleEntity } from "./resale.entity";
-import { TicketEntity } from "./ticket.entity";
 import { Exclude } from "class-transformer";
+import { UserEntity } from "@/models/user.entity";
+import { BaseEntity } from "@/models/base.entity";
+import { ResaleEntity } from "@/models/resale.entity";
+import { TicketEntity } from "@/models/ticket.entity";
+import { ApiHideProperty, ApiSchema } from "@nestjs/swagger";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity({
   name: "orders",
@@ -26,15 +26,11 @@ export class OrderEntity extends BaseEntity {
   })
   price: number;
 
-  @Exclude()
-  @ApiHideProperty()
-  @ManyToOne(() => UserEntity, (user) => user.id, {
-    nullable: false,
+  @Column({
+    type: "varchar",
+    length: 255,
   })
-  @JoinColumn({
-    name: "user_id",
-  })
-  user: UserEntity;
+  address: string;
 
   @Exclude()
   @ApiHideProperty()

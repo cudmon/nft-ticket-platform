@@ -1,7 +1,8 @@
 import { ApiSchema } from "@nestjs/swagger";
 import { BaseEntity } from "@/models/base.entity";
 import { EventEntity } from "@/models/event.entity";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { TokenEntity } from "@/models/token.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity({
   name: "tickets",
@@ -42,4 +43,7 @@ export class TicketEntity extends BaseEntity {
     name: "event_id",
   })
   event: EventEntity;
+
+  @OneToMany(() => TokenEntity, (token) => token.ticket)
+  tokens: TokenEntity[];
 }
