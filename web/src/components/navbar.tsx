@@ -14,7 +14,10 @@ export default function Navbar() {
                     backgroundColor: 'white',
                     'boxShadow': 'rgba(149, 157, 165, 0.2) 0px 8px 24px'
                   }}>
-              <h1>TicketHub</h1>
+
+              <Link href={'/'} style={{textDecoration: 'none', color: 'black'}}>
+                <h1>TicketHub</h1>
+              </Link>
               
               <Flex justify='space-between'
                     align={'center'}

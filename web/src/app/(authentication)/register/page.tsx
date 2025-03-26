@@ -1,7 +1,8 @@
 "use client";
 import { useState } from 'react';
-import { TextInput, PasswordInput, Container, Title, Group, Button, Fieldset, Text } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Text, Flex, Card } from '@mantine/core';
 import { Mail, Lock, User } from 'lucide-react';
+import Link from 'next/link';
 
 interface Form {
     name: string;
@@ -26,47 +27,44 @@ export default function page() {
     };
 
     return (
-        <Container size={600} my={60}>
-            <Fieldset>
-                <Title order={1} ta='center' mt='md' mb='md'>Register</Title>
-                <form onSubmit={handleSubmit}>
-                    <TextInput 
+        <Flex align='center' justify='center' h='100vh'>
+            <Card w='20rem' shadow='md'>
+                <Flex direction='column' gap={'md'}>
+                    <Text size='lg' fw={'bold'}>Register</Text>
+                    <TextInput
                         name='name'
-                        label='Name' 
+                        label='Name'
                         placeholder='Name'
                         value={formData.name}
                         onChange={handleInputChange}
-                        leftSection={<User/>}
+                        leftSection={<User size={'18px'}/>}
                         withAsterisk
                     />
-                    <TextInput 
+                    <TextInput
                         name='email'
-                        label='Email' 
+                        label='Email'
                         placeholder='user@example.com'
                         value={formData.email}
                         onChange={handleInputChange}
-                        leftSection={<Mail/>}
+                        leftSection={<Mail size={'18px'}/>}
                         withAsterisk
-                        mt='md'
                     />
-                    <PasswordInput 
+                    <PasswordInput
                         name='password'
-                        label='Password' 
+                        label='Password'
                         placeholder='Your password'
                         value={formData.password}
                         onChange={handleInputChange}
-                        leftSection={<Lock/>}
+                        leftSection={<Lock size={'18px'}/>}
                         withAsterisk
-                        mt='md'
                     />
-                    <Group align='center' mt='lg'>
-                        <Button type='submit' variant='filled' fullWidth>Register</Button>
-                    </Group>
-                </form>
-                <Text ta='center' mt='md' size='sm' c='blue'>
-                    Already have an account? <a href='/login'> Sign in →</a>
-                </Text>
-            </Fieldset>
-        </Container>
+                    <Button type='submit' variant='filled' fullWidth>Register</Button>
+
+                    <Text ta='center' size='sm' c='blue'>
+                        Already have an account? <Link href='/signin'> Sign in</Link>
+                    </Text>
+                </Flex>
+            </Card>
+        </Flex>
     )
 }
