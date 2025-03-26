@@ -62,6 +62,7 @@ export class TicketService {
     const res = await contract.add_ticket(
       ticket.id,
       ticket.total,
+      ticket.price,
       ticket.resalable
     );
 
