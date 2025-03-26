@@ -23,14 +23,15 @@ export default function Page() {
         email: email,
         password: password,
       }),
-      mode: 'no-cors',
-      credentials: 'include',
     });
 
     if (response.status != 201) {
       setErrorMessage('Invalid email or password');
       return;
     };
+
+    const data = await response.json();
+    localStorage.setItem('token', data.token);
 
     redirect('/');    
   };

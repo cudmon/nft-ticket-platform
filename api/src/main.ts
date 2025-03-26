@@ -18,7 +18,10 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:3001'],
+    credentials: true,
+  });
 
   const docs = new DocumentBuilder()
     .setTitle("NFT Ticket Platform")
