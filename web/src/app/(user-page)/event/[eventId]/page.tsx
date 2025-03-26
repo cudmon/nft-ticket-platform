@@ -9,8 +9,21 @@ interface Props {
     params : Promise<{eventId: string}>;
 }
 
+interface Response {
+  id: number;
+  title: string;
+  date: string;
+  location: string;
+  description: string;
+  published: boolean;
+  owner_id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function page(props: Props) {
-    // const { eventId } = await props.params;
+
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [ticketAmount, setTicketAmount] = useState(0);
     const [title, setTitle] = useState("Postmalone");
     const [description, setDescription] = useState("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, pariatur. Sequi ut quo illum esse aperiam incidunt minus quas tempore ab? Voluptate dicta magni soluta incidunt harum reiciendis laboriosam repellat.");
@@ -18,13 +31,20 @@ export default function page(props: Props) {
     const [price, setPrice] = useState(10000);
     
     useEffect(() => {   
-        fetchData();
+        fetchEventInformation();
         window.scrollTo(0, 0);
     }
     , []);
 
-    const fetchData = async () => {
-        console.log("Event ID: ", await props.params);
+    const fetchEventInformation = async () => {
+        const { eventId } = await props.params;
+
+        const response = await fetch(`${API_URL}/events/${eventId}`);
+        const data : Response = await response.json();
+
+        setTitle(data.title);
+        setDescription(data.description);
+        setLocation(data.location);
     }
 
     const checkout = () => {
