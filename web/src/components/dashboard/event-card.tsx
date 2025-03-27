@@ -2,8 +2,11 @@ import { Modal, Box, Flex, Image, Button, NumberFormatter, Grid, GridCol, Text }
 import { Ticket, Pencil, Banknote, Trash2 } from "lucide-react"
 import { useDisclosure } from '@mantine/hooks';
 import Link from "next/link";
+import { useContext } from "react";
+import { EventContext } from "@/contexts/events";
 
 interface Props {
+  id: string;
   title: string;
   description: string;
   location: string;
@@ -14,11 +17,17 @@ interface Props {
 }
 
 export default function EventCard(props: Props) { 
-  const { title, description, location, date, soldCount, totalTicket, gainMoney } = props;
+  const { id, title, description, location, soldCount, totalTicket, gainMoney } = props;
+  const {deleteEventById} = useContext(EventContext);
+
+  let date = new Date(props.date).toLocaleDateString('en-EN', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+
+  const deleteEvent = async (id: string) => {
+    await deleteEventById(id);
+    close();
+  };
+
   const [opened, { open, close }] = useDisclosure(false);
-  const deleteEvent = () => {
-    console.log('Delete event');
-  }
 
   return (
     <>
@@ -91,7 +100,7 @@ export default function EventCard(props: Props) {
 
       <Modal opened={opened} onClose={close} title="Delete confirmation" centered>
         <Button color="red"
-                onClick={()=>deleteEvent()}>Delete</Button>
+                onClick={()=>deleteEvent(id)}>Delete</Button>
       </Modal>
     </>
   )
