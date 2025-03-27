@@ -145,8 +145,12 @@ export class EventService implements OnModuleInit {
     );
   }
 
-  async findAll(): Promise<EventEntity[]> {
-    return await this.events.find();
+  async findAll(published?: boolean): Promise<EventEntity[]> {
+    return await this.events.find({
+      where: {
+        published,
+      },
+    });
   }
 
   async findByUserId(id: number): Promise<EventEntity[]> {
