@@ -17,6 +17,7 @@ interface Form {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 export default function page() {
@@ -25,6 +26,7 @@ export default function page() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const router = useRouter();
@@ -35,6 +37,10 @@ export default function page() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
     fetch(`${API_URL}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -79,6 +85,16 @@ export default function page() {
               leftSection={<Lock size={"18px"} />}
               withAsterisk
             />
+            <PasswordInput
+              name="confirmPassword"
+              label="Re-enter Password"
+              placeholder="Re-enter your password"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              leftSection={<Lock size={"18px"} />}
+              withAsterisk
+            />
+
             <Button type="submit" variant="filled" fullWidth>
               Register
             </Button>
