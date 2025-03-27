@@ -1,5 +1,12 @@
+import { Divider, Text } from "@mantine/core";
+
 export default function Footer() {
-    return (
-        <h1>Footer work</h1>
-    )
+  return (
+    <footer>
+      <Divider mt={25} />
+      <Text size="md" mt={25} mb={25} ml={75}>
+        &copy; TicketHub {new Date().getFullYear()}
+      </Text>
+    </footer>
+  );
 }
