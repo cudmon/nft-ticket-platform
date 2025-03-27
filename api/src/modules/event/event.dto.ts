@@ -29,6 +29,10 @@ export class CreateEvent {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @IsString()
+  @IsOptional()
+  image?: string;
 }
 
 @ApiSchema({
