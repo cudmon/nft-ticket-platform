@@ -80,7 +80,7 @@ export default function EventCard(props: Props) {
           
           <Grid>
             <GridCol span={6}>
-              <Link href={'/dashboard/event/1'}>
+              <Link href={`/dashboard/event/` + id}>
                 <Button>
                   <Pencil strokeWidth={'1.2px'}/>
                 </Button>
