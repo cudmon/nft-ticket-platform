@@ -1,16 +1,24 @@
-import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
+"use client";
 
-import { ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps } from '@mantine/core';
-import { Box } from '@mantine/core';
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+
+import {
+  ColorSchemeScript,
+  MantineProvider,
+  createTheme,
+  mantineHtmlProps,
+} from "@mantine/core";
+import { Box } from "@mantine/core";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const theme = createTheme({
-  cursorType: 'pointer',
+  cursorType: "pointer",
 });
 
-export default function RootLayout({ children,
+export default function RootLayout({
+  children,
 }: {
   children: React.ReactNode;
 }) {
@@ -20,18 +28,17 @@ export default function RootLayout({ children,
         <ColorSchemeScript />
       </head>
 
-      <body style={
-        {
-          overflow: 'scroll',
-          overflowX: 'hidden',
-        }
-      }>
+      <body
+        style={{
+          overflow: "scroll",
+          overflowX: "hidden",
+        }}
+      >
         <MantineProvider theme={theme}>
-
-          <Box pos={'relative'}>
-            <Navbar/>
+          <Box pos={"relative"}>
+            <Navbar />
             {children}
-            <Footer/>
+            <Footer />
           </Box>
         </MantineProvider>
       </body>

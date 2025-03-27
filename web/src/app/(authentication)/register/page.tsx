@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import {
   TextInput,
   PasswordInput,
@@ -10,6 +11,7 @@ import {
 } from "@mantine/core";
 import { Mail, Lock, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Form {
   name: string;
@@ -18,11 +20,14 @@ interface Form {
 }
 
 export default function page() {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [formData, setFormData] = useState<Form>({
     name: "",
     email: "",
     password: "",
   });
+
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
@@ -30,14 +35,12 @@ export default function page() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
-    fetch("http://localhost:3000/auth/register", {
+    fetch(`${API_URL}/auth/register`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", credentials: "include" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then(() => router.replace("/signin"))
       .catch((error) => console.log(error));
   };
 
