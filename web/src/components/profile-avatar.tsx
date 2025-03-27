@@ -1,12 +1,14 @@
 "use client";
 
 import { Avatar, Menu, Text } from "@mantine/core";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 declare var window: any;
 
 interface data {
   id: number;
+  name: string;
   email: string;
 }
 
@@ -27,7 +29,7 @@ const ProfileAvatar = (data: data) => {
       console.log("Connected Account:", accounts[0]);
       router.push("/myticket");
     } catch (error) {
-      console.log("User denied account access", error);
+      alert("User denied account access");
     }
   };
 
@@ -44,14 +46,33 @@ const ProfileAvatar = (data: data) => {
           />
         </Menu.Target>
 
-        <Menu.Dropdown w={200}>
+        <Menu.Dropdown>
+
+          <Menu.Label>
+            <Text>{data.name}</Text>
+          </Menu.Label>
+
           <Menu.Label>
             <Text>{data.email}</Text>
           </Menu.Label>
+
           <Menu.Divider />
+
           <Menu.Item onClick={toMyTicket}>
             <Text>My ticket</Text>
           </Menu.Item>
+
+          <Menu.Item>
+            <Link href={'/dashboard'}
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                  }}
+            >
+              <Text>Dashboard</Text>
+            </Link>
+          </Menu.Item>
+
           <Menu.Item onClick={logout}>
             <Text style={{ color: "red" }}>Log out</Text>
           </Menu.Item>

@@ -8,6 +8,7 @@ import { Flex, Input, Button } from "@mantine/core";
 
 export default function Navbar() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const [data, setData] = useState({
     id: null,
     name: "",
@@ -15,7 +16,6 @@ export default function Navbar() {
   });
 
   useEffect(() => {
-    console.log(localStorage.getItem("token"));
 
     fetch(`${API_URL}/auth/me`, {
       headers: {
@@ -56,7 +56,9 @@ export default function Navbar() {
         />
 
         {data["id"] ? (
-          <ProfileAvatar id={data["id"]} email={data["email"]} />
+          <ProfileAvatar id={data["id"]} 
+                         email={data["email"]} 
+                         name={data["name"]}/>
         ) : (
           <Link href="/signin">
             <Button size="md">Sign In</Button>

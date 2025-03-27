@@ -1,7 +1,6 @@
 'use client';
 
 import EventCard from "@/components/dashboard/event-card";
-import { useEvents } from "@/hooks/useEvents";
 import { Image, Modal, Button, Grid, GridCol, Textarea, TextInput, Flex, FileInput } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useDisclosure } from '@mantine/hooks';
