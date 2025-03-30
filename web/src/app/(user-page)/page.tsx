@@ -1,6 +1,7 @@
 'use client';
 
 import EventCard from '@/components/event-card';
+import { useEvents } from '@/hooks/useEvents';
 import { Flex, Grid, Image } from '@mantine/core';
 import { useEffect, useState } from 'react';
 
@@ -14,16 +15,16 @@ interface Event {
   owner_id: number;
   createdAt: string;
   updatedAt: string;
+  image: string;
 }
 
 export default function Page() {
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [events, setEvents] = useState<Event[]>([]);
+  const useEventsHook = useEvents();
 
   const fetchEvents = async () => {
-    const response = await fetch(`${API_URL}/events`);
-    const data = await response.json();
+    const data = await useEventsHook.getPublishedEvents();
     setEvents(data);
   }
 
@@ -49,11 +50,12 @@ export default function Page() {
               <Grid>
                 {
                   events.map((event) => {
-                    return <Grid.Col span={4}>
+                    return <Grid.Col span={4} key={event.id}>
                       <EventCard eventName={event.title}
                                 eventDescription={event.description}
                                 eventId={event.id.toString()}
-                                eventStatus={'AVAILABLE'}/>
+                                eventStatus={'AVAILABLE'}
+                                posterURL={event.image}/>
                     </Grid.Col>
                   })
                 }

@@ -27,10 +27,14 @@ export class WalletController {
         id: token.ticket.id,
         name: token.ticket.name,
         price: token.ticket.price,
+        resalable: token.ticket.resalable,
       },
       event: {
         id: token.ticket.event.id,
         title: token.ticket.event.title,
+        description: token.ticket.event.description,
+        date: token.ticket.event.date,
+        location: token.ticket.event.location,
       },
     }));
   }

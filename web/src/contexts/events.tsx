@@ -5,25 +5,31 @@ import { Event } from "@/app/(user-page)/dashboard/page";
 const EventContext = createContext<any>({events: [], deleteEventById: () => {}, postEvents: () => {}});
 
 const EventContextProvider = ({children} : {  children: any }) => {
-  const {deleteEvent, getEventsEndpoint, postEventsToDB} = useEvents();
+  const useEventsHook = useEvents();
   const [events, setEvents] = useState<Event[]>([]);
 
-  const fetchEvents = async () => {
-    setEvents(await getEventsEndpoint());
+  const fetchEventsOwnByUser = async () => {
+    const data = await useEventsHook.fetchEventsOwnByUser();
+
+    if (!data) {
+      return;
+    }
+
+    setEvents(data);
   };
 
   const deleteEventById = async (id: string) => {
-    await deleteEvent(id);
-    fetchEvents();
+    await useEventsHook.deleteEvent(id);
+    fetchEventsOwnByUser();
   };
 
-  const postEvents = async (formTitle: string, formDate: Date, formLocation: string, formDescription: string) => {
-    await postEventsToDB(formTitle, formDate, formLocation, formDescription);
-    fetchEvents();
+  const postEvents = async (formTitle: string, formDate: Date, formLocation: string, formDescription: string, posterURL: string) => {
+    await useEventsHook.postEventsToDB(formTitle, formDate, formLocation, formDescription, posterURL);
+    fetchEventsOwnByUser();
   };
 
   useEffect(() => {
-    fetchEvents();
+    fetchEventsOwnByUser();
   }, []);
 
   return (

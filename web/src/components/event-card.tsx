@@ -1,4 +1,4 @@
-import { Card, Text, Badge, Button, Group, Image } from '@mantine/core';
+import { Card, Text, Badge, Button, Group, Image, Box } from '@mantine/core';
 import Link from 'next/link';
 
 interface Props {
@@ -6,18 +6,28 @@ interface Props {
     eventDescription: string;
     eventId: string;
     eventStatus: string;
+    posterURL: string;
 }
 
 export default function EventCard(props: Props) {
-    const { eventName, eventDescription, eventId, eventStatus } = props;
+    const { eventName, eventDescription, eventId, eventStatus, posterURL } = props;
 
     return (
         <Card shadow="sm" 
               padding="lg" radius="md" withBorder>
 
-            <Image radius={"md"}
-                src={"https://placehold.co/100x40"}
-                />
+            <Box h={'15rem'} mb="xs">
+                <Image radius={"md"}
+                    src={posterURL}
+                    w={'100%'}
+                    style={{
+                        height: '15rem',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        overflow: 'hidden',
+                    }}
+                    />
+            </Box>
 
             <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500}>{eventName}</Text>
@@ -25,9 +35,10 @@ export default function EventCard(props: Props) {
             </Group>
 
             <Text size="sm" c="dimmed"
-                  lineClamp={5}>
+                  lineClamp={5}
+                  h={'6rem'}
+                  >
                 {eventDescription}
-                
             </Text>
 
             <Link href={`/event/${eventId}`}

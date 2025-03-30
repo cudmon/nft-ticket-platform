@@ -1,46 +1,98 @@
-import { Container, Text, Group, Button } from "@mantine/core";
+import { Text, Group, Button, NumberFormatter, Flex, Card, Modal, NumberInput } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { Check, X } from "lucide-react";
+import { useState } from "react";
 
-const Ticket = () => {
+interface Props {
+  eventName: string;
+  eventDate: Date;
+  eventLocation: string;
+  ticketPrice: number;
+  isResalable: boolean;
+}
+
+const Ticket = (props: Props) => {
+  const { eventName, eventLocation, ticketPrice, isResalable } = props;
+  const eventDate = new Date(props.eventDate).toLocaleDateString("en-US", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const [selectedPrice, setSelectedPrice] = useState<number>(ticketPrice);
+
   return (
-    <Container
-      size="xs"
-      w={350}
-      m={20}
-      p={20}
-      style={{
-        borderRadius: "12px",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        border: "1px solid #ccc",
-      }}
-    >
-      <Text size="lg" w={700} style={{ marginBottom: "12px" }}>
-        Event Ticket
-      </Text>
+    <>
+      <Card
+        p={'md'}
+        radius={'md'}
+        style={{
+          boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+        }}
+      >
+        <Flex direction={"column"} 
+              gap="md">
+          <Text size="xl" 
+                fw={'bold'}
+                >
+            {eventName}
+          </Text>
 
-      <Group style={{ marginBottom: "10px" }}>
-        <Text size="sm">Event Date:</Text>
-        <Text size="sm" c="gray">
-          25 March, 2025
-        </Text>
-      </Group>
+          <Group>
+            <Text fw={'bold'}>Event Date:</Text>
+            <Text>
+              {eventDate}
+            </Text>
+          </Group>
 
-      <Group style={{ marginBottom: "10px" }}>
-        <Text size="sm">Location:</Text>
-        <Text size="sm" c="gray">
-          Some place
-        </Text>
-      </Group>
+          <Group>
+            <Text fw={'bold'}>Location:</Text>
+            <Text>
+              {eventLocation}
+            </Text>
+          </Group>
 
-      <Group style={{ marginBottom: "20px" }}>
-        <Text size="sm">Desciption:</Text>
-        <Text size="sm" c="gray">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem,
-          voluptatum?
-        </Text>
-      </Group>
+          <Group>
+            <Text fw={'bold'}>Ticket price:</Text>
+            <NumberFormatter 
+              value={ticketPrice}
+              suffix=" ETH"
+              thousandSeparator/>
+          </Group>
 
-      <Button bg="red">Sell</Button>
-    </Container>
+          <Group>
+            <Text fw={'bold'}>Resalable:</Text>
+            {
+              isResalable ? (
+                <Check color="green"/>
+              ) : (
+                <X color="red"/>
+              )
+            }
+          </Group>
+
+          <Button color="red"
+                  disabled={!isResalable}
+                  onClick={open}>Sell</Button>
+        </Flex>
+      </Card>
+      
+      <Modal opened={opened} 
+             onClose={close} 
+             title="Sell confirmation"
+             centered>
+
+              <Flex direction={"column"}
+                    gap="md">
+
+                <NumberInput
+                  label="Selling price"
+                  min={0}
+                  value={selectedPrice}
+                  suffix=" ETH"
+                  onChange={(e)=>{setSelectedPrice(Number(e))}}/>
+
+                <Button color="red">Sell</Button>
+              </Flex>
+      </Modal>
+    </>
   );
 };
 

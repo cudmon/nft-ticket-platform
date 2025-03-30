@@ -54,7 +54,7 @@ contract Event is ERC721, Ownable(tx.origin) {
         Ticket storage ticket = tickets[_id];
 
         require(ticket.total >= ticket.sold + _amount, "Not enough tickets");
-        require(msg.value == ticket.price * _amount, "Incorrect amount");
+        require(msg.value == ticket.price * _amount, "Incorrect amount ");
 
         for (uint i = 0; i < _amount; i++) {
             _mint(msg.sender, token_counter);

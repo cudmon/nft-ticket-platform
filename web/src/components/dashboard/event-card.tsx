@@ -14,10 +14,11 @@ interface Props {
   soldCount: number;
   totalTicket: number;
   gainMoney: number;
+  isPublished: boolean;
 }
 
 export default function EventCard(props: Props) { 
-  const { id, title, description, location, soldCount, totalTicket, gainMoney } = props;
+  const { isPublished, id, title, description, location, soldCount, totalTicket, gainMoney } = props;
   const {deleteEventById} = useContext(EventContext);
 
   let date = new Date(props.date).toLocaleDateString('en-EN', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
@@ -38,7 +39,8 @@ export default function EventCard(props: Props) {
         }}
         justify={'space-between'}
         px={'lg'}
-        py={'md'}>
+        py={'md'}
+        >
           
         <Flex gap={'lg'}
           align={'center'}
@@ -50,16 +52,21 @@ export default function EventCard(props: Props) {
 
           <Box>
             <h3>{title}</h3>
+
             <Flex gap={'md'}>
               <Text fw={'bold'}>description:</Text> 
               <Text lineClamp={1}
                     w={'30rem'}>{description}</Text>
             </Flex>
+
             <Flex gap={'md'}>
               <Text fw={'bold'}>location:</Text> 
               <Text>{location}</Text>
             </Flex>
+
             <Flex gap={'md'}><Text fw={'bold'}>date:</Text> {date}</Flex>
+
+            <Flex gap={'md'}><Text fw={'bold'}>Published:</Text> {isPublished ? 'Already' : 'Draft'} </Flex>
           </Box>
         </Flex>
 
@@ -73,7 +80,7 @@ export default function EventCard(props: Props) {
             <Banknote strokeWidth={'1.2px'}/> 
             <NumberFormatter value={gainMoney} 
                              thousandSeparator 
-                             suffix=" THB"
+                             suffix=" ETH"
                              fixedDecimalScale
                              decimalScale={2}/>
           </Flex>
