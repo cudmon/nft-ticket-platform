@@ -17,6 +17,21 @@ export class WalletController {
 
   @Get(":address/tokens")
   async findTokens(@Param("address") address: string) {
-    return this.token.findByWallet(address);
+    const tokens = await this.token.findByWallet(address);
+
+    return tokens.map((token) => ({
+      id: token.id,
+      address: token.address,
+      nft_id: token.nft_id,
+      ticket: {
+        id: token.ticket.id,
+        name: token.ticket.name,
+        price: token.ticket.price,
+      },
+      event: {
+        id: token.ticket.event.id,
+        title: token.ticket.event.title,
+      },
+    }));
   }
 }
