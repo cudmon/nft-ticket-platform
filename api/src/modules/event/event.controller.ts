@@ -6,6 +6,7 @@ import { ResaleService } from "@/modules/resale/resale.service";
 import { Session } from "@/common/decorators/session.decorator";
 import { Contract, JsonRpcProvider, Wallet } from "ethers";
 import { CreateEvent, UpdateEvent } from "@/modules/event/event.dto";
+import { TokenService } from "@/modules/token/token.service";
 import { abi } from "@nft-ticket/contracts/artifacts/contracts/Factory.sol/Factory.json";
 import {
   Body,
@@ -30,7 +31,8 @@ export class EventController {
     private readonly event: EventService,
     private readonly ticket: TicketService,
     private readonly resale: ResaleService,
-    private readonly config: ConfigService
+    private readonly config: ConfigService,
+    private readonly token: TokenService
   ) {
     this.PROVIDER = new JsonRpcProvider(this.config.get("JSON_RPC_URL"));
   }
@@ -64,7 +66,16 @@ export class EventController {
   @Public()
   @Get(":id/tickets")
   async findTickets(@Param("id") id: number) {
-    return await this.ticket.findByEventId(id);
+    const tickets = await this.ticket.findByEventId(id);
+
+    const results = await Promise.all(
+      tickets.map(async (ticket) => ({
+        ...ticket,
+        sold: await this.token.countByTicketId(ticket.id),
+      }))
+    );
+
+    return results;
   }
 
   @Public()

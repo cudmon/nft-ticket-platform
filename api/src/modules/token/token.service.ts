@@ -15,6 +15,21 @@ export class TokenService {
       where: {
         address,
       },
+      relations: {
+        ticket: {
+          event: true,
+        },
+      },
+    });
+  }
+
+  async countByTicketId(ticketId: number) {
+    return this.tokens.count({
+      where: {
+        ticket: {
+          id: ticketId,
+        },
+      },
     });
   }
 }
