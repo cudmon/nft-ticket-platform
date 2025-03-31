@@ -22,6 +22,7 @@ struct Resale {
 contract Event is ERC721, Ownable(tx.origin) {
     mapping(uint => Ticket) public tickets;
     mapping(uint => Resale) public resales;
+    mapping(uint => uint) public token_to_ticket;
 
     uint public token_counter;
     uint public resale_counter;
@@ -37,6 +38,7 @@ contract Event is ERC721, Ownable(tx.origin) {
     event Ticket_Resell(
         uint resale_id,
         uint token_id,
+        uint ticket_id,
         address from,
         uint price
     );
@@ -59,6 +61,8 @@ contract Event is ERC721, Ownable(tx.origin) {
         for (uint i = 0; i < _amount; i++) {
             _mint(msg.sender, token_counter);
 
+            token_to_ticket[token_counter] = _id;
+
             emit Ticket_Minted(token_counter, _id, msg.sender);
 
             token_counter++;
@@ -79,7 +83,13 @@ contract Event is ERC721, Ownable(tx.origin) {
             _token_id
         );
 
-        emit Ticket_Resell(resale_counter, _token_id, msg.sender, _price);
+        emit Ticket_Resell(
+            resale_counter,
+            _token_id,
+            token_to_ticket[_token_id],
+            msg.sender,
+            _price
+        );
 
         resale_counter++;
     }

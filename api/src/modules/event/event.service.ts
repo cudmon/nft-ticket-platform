@@ -119,13 +119,16 @@ export class EventService implements OnModuleInit {
       async (
         resale_id: number,
         token_id: number,
+        ticket_id: number,
         from: string,
         price: number
       ) => {
         await this.resales.save(
           this.resales.create({
             id: resale_id,
-
+            ticket: {
+              id: ticket_id,
+            },
             token: {
               id: token_id,
             },
