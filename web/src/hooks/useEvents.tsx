@@ -110,7 +110,7 @@ export function useEvents() {
             headers: headerOption,
             body: JSON.stringify({
                 name: name,
-                price: price,
+                price: Number(price * 1_000_000_000_000_000_000),
                 total: total,
                 resalable: resalable,
                 event_id: eventId
@@ -175,6 +175,7 @@ export function useEvents() {
         const data = await response.json();
         return data;
     }
+
     
     useEffect (() => {
         setHeaderOption({

@@ -2,7 +2,7 @@
 
 import EventCard from '@/components/event-card';
 import { useEvents } from '@/hooks/useEvents';
-import { Flex, Grid, Image } from '@mantine/core';
+import { Box, Flex, Grid, Image } from '@mantine/core';
 import { useEffect, useState } from 'react';
 
 interface Event {
@@ -37,9 +37,12 @@ export default function Page() {
 
         <Flex direction={"column"}
               gap={"md"}>
-          <Image radius={"md"}
-                  h={"100"}
-                  src={"https://placehold.co/100x20"}/>
+          
+          <Box h={500}>
+            <Image radius={"md"}
+                    h={"500"}
+                    src={"https://cdn.prod.website-files.com/62cd593e955c2638cf28f54d/65076152fa43f0f533a796f0_NFT%20Ticketing%20Platform.png"}/>
+          </Box>
 
           <Grid justify='center'>
             <Grid.Col span={10}>

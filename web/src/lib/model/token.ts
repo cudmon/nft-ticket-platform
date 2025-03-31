@@ -1,4 +1,6 @@
-interface TokenResponse {
+import { Address } from "viem";
+
+export interface TokenResponse {
   id: number;
   address: string;
   nft_id: number;
@@ -19,4 +21,5 @@ interface Event {
   description: string;
   date: string;
   location: string;
+  address: Address;
 }

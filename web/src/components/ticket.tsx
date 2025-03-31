@@ -1,7 +1,9 @@
+import useEventContract from "@/hooks/useEventContract";
 import { Text, Group, Button, NumberFormatter, Flex, Card, Modal, NumberInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
+import { Address } from "viem";
 
 interface Props {
   eventName: string;
@@ -9,14 +11,23 @@ interface Props {
   eventLocation: string;
   ticketPrice: number;
   isResalable: boolean;
+  eventAddress: Address;
+  tokenId: number;
 }
 
 const Ticket = (props: Props) => {
-  const { eventName, eventLocation, ticketPrice, isResalable } = props;
+  const { eventName, eventLocation, ticketPrice, isResalable, eventAddress, tokenId } = props;
   const eventDate = new Date(props.eventDate).toLocaleDateString("en-US", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
   const [opened, { open, close }] = useDisclosure(false);
 
   const [selectedPrice, setSelectedPrice] = useState<number>(ticketPrice);
+
+  const useEventContractHook = useEventContract();
+
+  const sellTicket = async () => {
+    useEventContractHook.resellTicket(eventAddress, tokenId, selectedPrice);
+    close();
+  };
 
   return (
     <>
@@ -54,6 +65,7 @@ const Ticket = (props: Props) => {
             <NumberFormatter 
               value={ticketPrice}
               suffix=" ETH"
+              decimalScale={10}
               thousandSeparator/>
           </Group>
 
@@ -87,9 +99,13 @@ const Ticket = (props: Props) => {
                   min={0}
                   value={selectedPrice}
                   suffix=" ETH"
+                  withAsterisk
+                  decimalScale={10}
+                  step={0.0001}
+                  thousandSeparator 
                   onChange={(e)=>{setSelectedPrice(Number(e))}}/>
 
-                <Button color="red">Sell</Button>
+                <Button color="red" onClick={sellTicket}>Sell</Button>
               </Flex>
       </Modal>
     </>

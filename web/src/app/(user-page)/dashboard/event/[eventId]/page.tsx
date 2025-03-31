@@ -1,13 +1,13 @@
 'use client';
 
-import { Grid, GridCol, Image, Flex, Textarea, TextInput, Button, Table, TableThead, TableTr, TableTh, TableTbody, TableTd, NumberFormatter, Modal, Switch, NumberInput, Card } from "@mantine/core";
+import { Grid, GridCol, Image, Flex, Textarea, TextInput, Button, Table, TableThead, TableTr, TableTh, TableTbody, TableTd, NumberFormatter, Modal, Switch, NumberInput, Card, Box } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { Check, Pencil, Plus, Rss, Save, Trash2, X } from "lucide-react";
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from "react";
 import { useEvents } from "@/hooks/useEvents";
 import { EventTicket } from "@/lib/model/useEvents-model";
-import { useSDK, MetaMaskProvider } from "@metamask/sdk-react";
+import { formatEther } from "viem";
 
 interface Props {
   params: Promise<{ eventId: string }>;
@@ -21,6 +21,7 @@ export default function Page(props: Props) {
   const [location, setLocation] = useState('');
   const [date, setDate] = useState<Date | null>(new Date());
   const [isPublished, setIsPublished] = useState(false);
+  const [eventImage, setEventImage] = useState<string | null>(null);
 
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -30,7 +31,7 @@ export default function Page(props: Props) {
   const [modalButtonLabel, setModalButtonLabel] = useState('Create new ticket');
 
   const [ticketName, setTicketName] = useState('Ealry Bird');
-  const [ticketPrice, setTicketPrice] = useState<Number>(500);
+  const [ticketPrice, setTicketPrice] = useState<Number>(0);
   const [ticketAmount, setTicketAmount] = useState(15);
   const [isTicketResalable, setIsTicketResalable] = useState<number>(0);
 
@@ -63,6 +64,7 @@ export default function Page(props: Props) {
     setLocation(eventInformation.location);
     setDate(new Date(eventInformation.date));
     setIsPublished(eventInformation.published);
+    setEventImage(eventInformation.image);
   };
 
   const patchEventInformation = async () => {
@@ -81,6 +83,10 @@ export default function Page(props: Props) {
   const getTicketsInformation = async () => {
     const { eventId } = await props.params;
     const tickets = await useEventsHook.getEventTickets(eventId);
+
+    tickets.forEach(ticket => {
+      ticket.price = Number(formatEther(BigInt(ticket.price)));
+    });
 
     setTickets(tickets);
   };
@@ -173,10 +179,18 @@ export default function Page(props: Props) {
                         direction={'column'}
                         h={'100%'}>
 
-                    <Image src={'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png'}
-                      radius={"md"}
-                      h={'20rem'}
-                      w={'30rem'} />
+
+                    <Card w={'30rem'}
+                          h={'20rem'}
+                         style={
+                          {
+                            overflow: 'hidden'
+                          }
+                         }
+                         p={0}
+                         >
+                      <Image src={eventImage}/>
+                    </Card>
 
                     <Button leftSection={<Rss size={'15px'}/>}
                             disabled={isPublished}
@@ -248,7 +262,7 @@ export default function Page(props: Props) {
                       <TableTh>Price</TableTh>
                       <TableTh>Amount</TableTh>
                       <TableTh>Resalable</TableTh>
-                      <TableTh w={'1rem'}>Action</TableTh>
+                      {/* <TableTh w={'1rem'}>Action</TableTh> */}
                     </TableTr>
                   </TableThead>
 
@@ -263,7 +277,7 @@ export default function Page(props: Props) {
                                   <NumberFormatter value={ticket.price} suffix=" ETH" />
                                 </TableTd>
                                 <TableTd>
-                                  {ticket.total}
+                                  {ticket.sold} / {ticket.total}
                                 </TableTd>
                                 <TableTd>
                                   {
@@ -272,11 +286,11 @@ export default function Page(props: Props) {
                                 </TableTd>
                                 <TableTd>
                                   <Flex gap={'md'}>
-                                    <Button leftSection={<Pencil size={'15px'} />}
-                                      onClick={() => openEditTicketDialog(ticket.id.toString())}>Edit</Button>
-                                    <Button leftSection={<Trash2 size={'15px'} />}
+                                    {/* <Button leftSection={<Pencil size={'15px'} />}
+                                      onClick={() => openEditTicketDialog(ticket.id.toString())}>Edit</Button> */}
+                                    {/* <Button leftSection={<Trash2 size={'15px'} />}
                                             color="red"
-                                            onClick={() => deleteTicket(ticket.id)}>Delete</Button>
+                                            onClick={() => deleteTicket(ticket.id)}>Delete</Button> */}
                                   </Flex>
                                 </TableTd>
                               </TableTr>
@@ -308,9 +322,9 @@ export default function Page(props: Props) {
           <NumberInput label="Price"
             withAsterisk
             min={0}
-            decimalScale={2}
+            decimalScale={10}
             suffix=" ETH"
-            step={200}
+            step={0.0001}
             thousandSeparator 
             value={Number(ticketPrice)}
             onChange={(value) => setTicketPrice(Number(value))}/>

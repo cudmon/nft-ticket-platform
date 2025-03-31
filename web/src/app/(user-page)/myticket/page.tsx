@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Box, Grid, GridCol } from "@mantine/core";
+import { Grid, GridCol } from "@mantine/core";
 import Ticket from "@/components/ticket";
 import useWallet from "@/hooks/useWallet";
-import { useEvents } from "@/hooks/useEvents";
 import { Event } from "../dashboard/page";
-import { EventTicket } from "@/lib/model/useEvents-model";
 import useEventContract from "@/hooks/useEventContract";
+import { formatEther } from "viem";
+import { TokenResponse } from "@/lib/model/token";
 
 declare var window: any;
 
@@ -70,7 +70,8 @@ export default function Page() {
       <Grid justify="center">
 
         <GridCol span={10}>
-          <h2>My Tickets</h2>
+
+          <h2>My Ticket</h2>
         </GridCol>
 
         <GridCol span={10}>
@@ -84,8 +85,10 @@ export default function Page() {
                       eventName={token.event.title}
                       eventDate={new Date(token.event.date)}
                       eventLocation={token.event.location}
-                      ticketPrice={token.ticket.price}
+                      ticketPrice={Number(formatEther(BigInt(token.ticket.price)))}
                       isResalable={token.ticket.resalable}
+                      eventAddress={token.event.address}
+                      tokenId={token.nft_id}
                     />
                   </GridCol>
                 );

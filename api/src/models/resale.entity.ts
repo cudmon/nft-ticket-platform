@@ -13,9 +13,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 })
 export class ResaleEntity extends BaseEntity {
   @Column({
-    type: "decimal",
-    precision: 10,
-    scale: 2,
+    type: "float"
   })
   price: number;
 

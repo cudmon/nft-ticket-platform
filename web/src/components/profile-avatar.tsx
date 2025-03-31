@@ -59,7 +59,7 @@ const ProfileAvatar = (data: data) => {
           <Menu.Divider />
 
           <Menu.Item onClick={toMyTicket}>
-            <Text>My ticket</Text>
+            <Text>  My ticket</Text>
           </Menu.Item>
 
           <Menu.Item>

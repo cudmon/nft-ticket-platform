@@ -1,5 +1,5 @@
 import { Modal, Box, Flex, Image, Button, NumberFormatter, Grid, GridCol, Text } from "@mantine/core"
-import { Ticket, Pencil, Banknote, Trash2 } from "lucide-react"
+import { Ticket, Pencil, Banknote, Trash2, Check, X } from "lucide-react"
 import { useDisclosure } from '@mantine/hooks';
 import Link from "next/link";
 import { useContext } from "react";
@@ -15,10 +15,11 @@ interface Props {
   totalTicket: number;
   gainMoney: number;
   isPublished: boolean;
+  image: string;
 }
 
 export default function EventCard(props: Props) { 
-  const { isPublished, id, title, description, location, soldCount, totalTicket, gainMoney } = props;
+  const { isPublished, id, title, description, location, soldCount, totalTicket, gainMoney, image } = props;
   const {deleteEventById} = useContext(EventContext);
 
   let date = new Date(props.date).toLocaleDateString('en-EN', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
@@ -45,12 +46,14 @@ export default function EventCard(props: Props) {
         <Flex gap={'lg'}
           align={'center'}
           bg={"white"}>
-          <Image src={'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png'}
-            radius={"md"}
-            w={"20rem"}
-            h={"10rem"} />
+          <Box w={'10rem'}>
+            <Image src={image}
+              radius={"md"}
+              fit="cover"
+              />
+          </Box>
 
-          <Box>
+          <Flex direction={'column'} gap={'sm'}>
             <h3>{title}</h3>
 
             <Flex gap={'md'}>
@@ -66,8 +69,8 @@ export default function EventCard(props: Props) {
 
             <Flex gap={'md'}><Text fw={'bold'}>date:</Text> {date}</Flex>
 
-            <Flex gap={'md'}><Text fw={'bold'}>Published:</Text> {isPublished ? 'Already' : 'Draft'} </Flex>
-          </Box>
+            <Flex gap={'md'}><Text fw={'bold'}>Published:</Text> {isPublished ? <Check color="green"/> : <X color="red"/>} </Flex>
+          </Flex>
         </Flex>
 
         <Flex direction={'column'}

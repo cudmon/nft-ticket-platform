@@ -5,7 +5,7 @@ import { Image, Modal, Button, Grid, GridCol, Textarea, TextInput, Flex, FileInp
 import { DateTimePicker } from "@mantine/dates";
 import { useDisclosure } from '@mantine/hooks';
 import { File, Plus } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { EventContextProvider, EventContext } from "@/contexts/events";
 export interface Event {
   id: number;
@@ -15,7 +15,7 @@ export interface Event {
   description: string;
   published: boolean;
   address: string;
-  image: null;
+  image: string;
   owner_id: number;
 }
 
@@ -145,6 +145,7 @@ function Child() {
                       location={event.location}
                       date={event.date}
                       isPublished={event.published}
+                      image={event.image}
                       soldCount={20}
                       totalTicket={30}
                       gainMoney={1000}

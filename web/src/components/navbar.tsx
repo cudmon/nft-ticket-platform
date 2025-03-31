@@ -48,13 +48,6 @@ export default function Navbar() {
       </Link>
 
       <Flex justify="space-between" align="center" gap="md">
-        <Input
-          placeholder="Search events.."
-          leftSection={<Search />}
-          size="md"
-          mr={20}
-        />
-
         {data["id"] ? (
           <ProfileAvatar id={data["id"]} 
                          email={data["email"]} 

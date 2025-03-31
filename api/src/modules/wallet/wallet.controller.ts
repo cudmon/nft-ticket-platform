@@ -35,6 +35,7 @@ export class WalletController {
         description: token.ticket.event.description,
         date: token.ticket.event.date,
         location: token.ticket.event.location,
+        address: token.ticket.event.address,
       },
     }));
   }

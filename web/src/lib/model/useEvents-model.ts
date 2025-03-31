@@ -9,19 +9,19 @@ export interface EventInformation {
   owner_id: number;
   createdAt: string;
   updatedAt: string;
+  image: string;
 }
 
 export interface EventTicket {
   id: number;
-  name: string;
-  price: number;
-  total: number;
-  resalable: boolean;
-  event_id: number;
-  event: EventInformation;
-  tokens: Token[];
   createdAt: string;
   updatedAt: string;
+  name: string;
+  price: number;
+  total: number | 0;
+  resalable: boolean;
+  event_id: number;
+  sold: number | 0;
 }
 
 interface Token {
@@ -32,3 +32,4 @@ interface Token {
   createdAt: string;
   updatedAt: string;
 }
+

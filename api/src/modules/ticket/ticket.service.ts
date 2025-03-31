@@ -55,8 +55,9 @@ export class TicketService {
       this.PROVIDER
     );
 
+    
     const contract = new Contract(event.address, abi, wallet);
-
+    
     const ticket = await this.tickets.save(this.tickets.create(data));
 
     const res = await contract.add_ticket(

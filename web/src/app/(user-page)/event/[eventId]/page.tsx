@@ -2,12 +2,11 @@
 
 import { useEvents } from "@/hooks/useEvents";
 import { EventTicket } from "@/lib/model/useEvents-model";
-import { Grid, GridCol, Image, Button, Flex, NumberInput, NumberFormatter, Tabs, TabsList, TabsTab, TabsPanel, Table, TableThead, TableTr, TableTh, TableTbody, TableTd, NativeSelect, ComboboxData, ComboboxItem } from "@mantine/core";
+import { Grid, GridCol, Image, Button, Flex, NumberInput, NumberFormatter, Tabs, TabsList, TabsTab, TabsPanel, Table, TableThead, TableTr, TableTh, TableTbody, TableTd, NativeSelect, ComboboxItem } from "@mantine/core";
 import { TicketCheck, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Address } from "viem";
-import useWallet from "@/hooks/useWallet";
+import { Address, formatEther } from "viem";
 import useEventContract from "@/hooks/useEventContract";
 
 interface Props {
@@ -46,8 +45,6 @@ export default function page(props: Props) {
     const [tickets, setTickets] = useState<EventTicket[]>([]);
     const [selectedTicket, setSelectedTicket] = useState<EventTicket | null>(null);
 
-    const { connect, account, connected } = useWallet();
-
     const useEventContractHook = useEventContract();
 
     const fetchEventInformation = async () => {
@@ -67,6 +64,7 @@ export default function page(props: Props) {
         const { eventId } = await props.params;
 
         const tickets = await useEventsHook.getEventTickets(eventId);
+
         
         let dropDownOptionsTemp : ComboboxItem[] = [];
 
@@ -74,7 +72,9 @@ export default function page(props: Props) {
             dropDownOptionsTemp.push({
                 value: ticket.id.toString(),
                 label: ticket.name,
-            });}
+            });
+            ticket.price = Number(formatEther(BigInt(ticket.price)));
+            }
         );
 
         setTickets(tickets);
@@ -91,15 +91,17 @@ export default function page(props: Props) {
 
     const checkout = async () => {
 
-        await connect();
-
-        console.log(selectedTicket);
-
         if (!selectedTicket) {
             return;
         }
-        const fetchContract = await useEventContractHook.buyTicket(eventAddress, selectedTicket?.id , ticketAmount, BigInt(price * ticketAmount));
-        console.log( fetchContract );
+        
+        const response = await useEventContractHook.buyTicket(eventAddress, selectedTicket?.id , ticketAmount, price * ticketAmount);
+
+        if (response.message == 'success') {
+            alert("Success");
+        } else {
+            alert("Error");
+        }
     };
 
     useEffect(() => {   
@@ -112,14 +114,6 @@ export default function page(props: Props) {
     return (
         <Grid grow={true}>
             <GridCol span={6} pos={'relative'}>
-{/*                 
-                <Button onClick={() => {getLog(eventAddress)}}>
-                    Get log
-                </Button>
-
-                <Button onClick={() => {getBlock()}}>
-                    Get block
-                </Button> */}
 
                 <Link href={"/"}>
                     <Button radius={"lg"}
@@ -167,14 +161,19 @@ export default function page(props: Props) {
                         <NativeSelect data={dropdownOptions}
                                       onChange={(e) => {onTicketTypeChange(e.target.value)}}/>
 
-                        <p><b>price:</b> 
+                        <p><b>Price:</b> 
                             <NumberFormatter prefix=" " suffix=" ETH" value={price} thousandSeparator/>
+                        </p>
+
+                        <p><b>Remain tickets:</b> 
+                            <NumberFormatter prefix={` ${selectedTicket?.sold} / `} value={selectedTicket?.total}/>
                         </p>
                         
                         <Flex gap={"md"}
                               align={'center'}>
                             <NumberInput placeholder="Amount of ticket..." 
                                         min={0}
+                                        max={selectedTicket ? selectedTicket.total - selectedTicket.sold : 0}
                                         value={ticketAmount}
                                         onChange={(value) => setTicketAmount(Number(value))}
                                         suffix=" tickets"
@@ -183,14 +182,19 @@ export default function page(props: Props) {
 
                             <NumberFormatter value={ticketAmount * price}
                                              prefix="Total: "
-                                             suffix=" ETH"
-                                             thousandSeparator/>
+                                            decimalScale={10}
+                                            suffix=" ETH"
+                                            thousandSeparator/>
 
                             <Button variant="filled" color="green"
                                     leftSection={<TicketCheck size={20}/>}
                                     onClick={()=>checkout()}
-                                    disabled={ticketAmount === 0}>
-                                Check out
+                                    disabled={ticketAmount == 0 || (selectedTicket != null && (selectedTicket.sold - selectedTicket.total == 0))}>
+                                 {
+                                    selectedTicket && selectedTicket.sold - selectedTicket.total == 0
+                                    ? "Sold out"
+                                    : "Checkout"
+                                }
                             </Button>
                         </Flex>
                     </TabsPanel>
@@ -226,7 +230,8 @@ export default function page(props: Props) {
                                     </TableTd>
                                     <TableTd>
                                         <NumberFormatter value={1000} 
-                                                         thousandSeparator
+                                                         decimalScale={10}
+                                                         thousandSeparator 
                                                          suffix=" ETH"/>
                                     </TableTd>
                                     <TableTd>
@@ -234,8 +239,7 @@ export default function page(props: Props) {
                                     </TableTd>
                                     <TableTd>
                                         <Button variant="filled" color="green"
-                                                leftSection={<TicketCheck size={20}/>}
-                                                onClick={()=>checkout()}>
+                                                leftSection={<TicketCheck size={20}/>}>
                                             Check out
                                         </Button>
                                     </TableTd>

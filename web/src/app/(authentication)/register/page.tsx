@@ -17,16 +17,16 @@ interface Form {
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
 }
 
 export default function page() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
   const [formData, setFormData] = useState<Form>({
     name: "",
     email: "",
-    password: "",
-    confirmPassword: "",
+    password: ""
   });
 
   const router = useRouter();
@@ -37,7 +37,7 @@ export default function page() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
@@ -89,8 +89,8 @@ export default function page() {
               name="confirmPassword"
               label="Re-enter Password"
               placeholder="Re-enter your password"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.currentTarget.value)}
               leftSection={<Lock size={"18px"} />}
               withAsterisk
             />
