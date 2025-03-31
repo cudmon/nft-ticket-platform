@@ -25,6 +25,13 @@ export class ResaleEntity extends BaseEntity {
   })
   order: OrderEntity;
 
+  @Column({
+    type: "varchar",
+    length: 255,
+    nullable: false,
+  })
+  seller: string;
+
   @ManyToOne(() => TicketEntity, (ticket) => ticket.id, {
     nullable: false,
   })
