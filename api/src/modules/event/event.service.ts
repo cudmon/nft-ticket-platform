@@ -71,14 +71,14 @@ export class EventService implements OnModuleInit {
 
     contract.on(
       "Ticket_Resold",
-      async (resale_id: number, address: string, price: number) => {
+      async (resale_id: BigInt, address: string, price: BigInt) => {
         await this.orders.save(
           this.orders.create({
             resale: {
-              id: resale_id,
+              id: Number(resale_id),
             },
             address,
-            amount: price,
+            amount: 1,
           })
         );
       }
@@ -117,28 +117,28 @@ export class EventService implements OnModuleInit {
     contract.on(
       "Ticket_Resell",
       async (
-        resale_id: number,
-        token_id: number,
-        ticket_id: number,
+        resale_id: BigInt,
+        token_id: BigInt,
+        ticket_id: BigInt,
         from: string,
-        price: number
+        price: BigInt
       ) => {
         await this.resales.save(
           this.resales.create({
-            id: resale_id,
+            id: Number(resale_id),
             ticket: {
-              id: ticket_id,
+              id: Number(ticket_id),
             },
             token: {
-              id: token_id,
+              id: Number(token_id),
             },
-            price,
+            price: Number(price),
           })
         );
 
         await this.tokens.update(
           {
-            nft_id: token_id,
+            nft_id: Number(token_id),
           },
           {
             address: from,
