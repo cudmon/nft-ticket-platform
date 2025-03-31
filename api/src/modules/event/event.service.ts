@@ -69,20 +69,17 @@ export class EventService implements OnModuleInit {
   private listenToTicketPurchases(address: string) {
     const contract = new Contract(address, eabi, this.provider);
 
-    contract.on(
-      "Ticket_Resold",
-      async (resale_id: BigInt, address: string, price: BigInt) => {
-        await this.orders.save(
-          this.orders.create({
-            resale: {
-              id: Number(resale_id),
-            },
-            address,
-            amount: 1,
-          })
-        );
-      }
-    );
+    contract.on("Ticket_Resold", async (resale_id: BigInt, address: string) => {
+      await this.orders.save(
+        this.orders.create({
+          resale: {
+            id: Number(resale_id),
+          },
+          address,
+          amount: 1,
+        })
+      );
+    });
 
     contract.on(
       "Ticket_Bought",
@@ -129,6 +126,7 @@ export class EventService implements OnModuleInit {
             ticket: {
               id: Number(ticket_id),
             },
+            seller: from,
             token: {
               id: Number(token_id),
             },
