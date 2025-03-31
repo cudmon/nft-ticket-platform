@@ -35,7 +35,6 @@ export default function Page() {
   
     const data = await useEventContractHooks.getOwnTokens();
     
-    console.log(data);
     setOccupiedTokens(data);
   };
 
@@ -88,8 +87,10 @@ export default function Page() {
                       ticketPrice={Number(formatEther(BigInt(token.ticket.price)))}
                       isResalable={token.ticket.resalable}
                       eventAddress={token.event.address}
-                      tokenId={token.nft_id}
-                    />
+                      tokenId={token.id}
+                      tokenAddress={token.address}
+                      isResale={token.resale}
+                    />  
                   </GridCol>
                 );
               })

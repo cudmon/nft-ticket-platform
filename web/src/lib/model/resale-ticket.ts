@@ -1,26 +1,27 @@
-import { Address } from "viem";
-
-export interface TokenResponse {
+interface ResaleTicket {
   id: number;
-  address: string;
-  nft_id: number;
-  resale: boolean;
+  price: number;
   ticket: Ticket;
-  event: Event;
 }
 
 interface Ticket {
   id: number;
   name: string;
   price: number;
+  total: number;
   resalable: boolean;
+  event_id: number;
+  event: Event;
 }
 
 interface Event {
   id: number;
   title: string;
-  description: string;
   date: string;
   location: string;
-  address: Address;
+  description: string;
+  published: boolean;
+  address: string;
+  image: null;
+  owner_id: number;
 }

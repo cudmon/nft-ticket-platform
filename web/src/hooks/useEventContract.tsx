@@ -53,6 +53,28 @@ export default function useEventContract () {
         }
     };
 
+    const buyResaleTicket = async (eventContractAddress: Address, resaleTicketId: number, price: number) => {
+        const walletClient = ConnectWalletClient();
+        const publicClient =  ConnectPublicClient();
+
+        console.log(price);
+
+        try {
+            const { request } = await publicClient.simulateContract({
+                address: eventContractAddress,
+                abi: abi,
+                functionName: 'buy_resale',
+                args: [resaleTicketId],
+                account: (account as Address),
+                value: BigInt(price),
+            })
+
+            await walletClient.writeContract(request);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const getLogs = async (eventContractAddress: Address) => {
         const publicClient = ConnectPublicClient();
 
@@ -87,5 +109,5 @@ export default function useEventContract () {
         return data;
     };
         
-    return { buyTicket, getLogs, getBlock, getOwnTokens, resellTicket };
+    return { buyTicket, getLogs, getBlock, getOwnTokens, resellTicket, buyResaleTicket };
 }

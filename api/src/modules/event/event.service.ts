@@ -123,6 +123,7 @@ export class EventService implements OnModuleInit {
         from: string,
         price: BigInt
       ) => {
+
         await this.resales.save(
           this.resales.create({
             id: Number(resale_id),

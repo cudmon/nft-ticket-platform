@@ -47,6 +47,8 @@ export default function page(props: Props) {
 
     const useEventContractHook = useEventContract();
 
+    const [resaleTickets, setResaleTickets] = useState<ResaleTicket[]>([]);
+
     const fetchEventInformation = async () => {
         const { eventId } = await props.params;
 
@@ -58,6 +60,14 @@ export default function page(props: Props) {
         setLocation(data.location);
         setEventAddress(data.address);
         setImage(data.image);
+    };
+
+    const fetchResalesTicket = async () => {
+        const { eventId } = await props.params;
+
+        const data = await useEventsHook.fetchEventsResale(eventId);
+
+        setResaleTickets(data);
     };
 
     const fetchEventTickets = async () => {
@@ -107,6 +117,7 @@ export default function page(props: Props) {
     useEffect(() => {   
         fetchEventInformation();
         fetchEventTickets();
+        fetchResalesTicket();
         window.scrollTo(0, 0);
     }
     , []);
@@ -212,38 +223,39 @@ export default function page(props: Props) {
                                     <TableTh>
                                         Price
                                     </TableTh>
-                                    <TableTh>
-                                        Owner
-                                    </TableTh>
                                     <TableTh w='1rem'>
                                     </TableTh>
                                 </TableTr>
                             </TableThead>
 
                             <TableTbody>
-                                <TableTr>
-                                    <TableTd>
-                                        1
-                                    </TableTd>
-                                    <TableTd>
-                                        Early bird
-                                    </TableTd>
-                                    <TableTd>
-                                        <NumberFormatter value={1000} 
-                                                         decimalScale={10}
-                                                         thousandSeparator 
-                                                         suffix=" ETH"/>
-                                    </TableTd>
-                                    <TableTd>
-                                        John Doe
-                                    </TableTd>
-                                    <TableTd>
-                                        <Button variant="filled" color="green"
-                                                leftSection={<TicketCheck size={20}/>}>
-                                            Check out
-                                        </Button>
-                                    </TableTd>
-                                </TableTr>
+                                {
+                                    resaleTickets.map((resaleTicket, index) => {
+                                        return (
+                                            <TableTr key={index}>
+                                                <TableTd>
+                                                    {index + 1}
+                                                </TableTd>
+                                                <TableTd>
+                                                    {resaleTicket.ticket.name}
+                                                </TableTd>
+                                                <TableTd>
+                                                    <NumberFormatter value={formatEther(BigInt(resaleTicket.price))} 
+                                                                    decimalScale={10}
+                                                                    thousandSeparator 
+                                                                    suffix=" ETH"/>
+                                                </TableTd>
+                                                <TableTd>
+                                                    <Button variant="filled" color="green"
+                                                            leftSection={<TicketCheck size={20}/>}
+                                                            onClick={() => useEventContractHook.buyResaleTicket(eventAddress, resaleTicket.id, resaleTicket.price)}>
+                                                        Check out
+                                                    </Button>
+                                                </TableTd>
+                                            </TableTr>
+                                        )
+                                    })
+                                }
                             </TableTbody>
                         </Table>
                     </TabsPanel>

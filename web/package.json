@@ -11,9 +11,11 @@
     "@mantine/dates": "^7.17.2",
     "@mantine/hooks": "^7.17.2",
     "@metamask/sdk-react": "^0.32.1",
+    "@types/qrcode": "^1.5.5",
     "dayjs": "^1.11.13",
     "lucide-react": "^0.483.0",
     "next": "^15.2.1",
+    "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "viem": "^2.24.1"

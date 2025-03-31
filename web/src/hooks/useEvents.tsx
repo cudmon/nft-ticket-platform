@@ -176,6 +176,16 @@ export function useEvents() {
         return data;
     }
 
+    const fetchEventsResale = async (eventId: string) => {
+        const response = await fetch(`${backendURL}/events/${eventId}/resales`, {
+            method: 'GET',
+            headers: headerOption
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
     
     useEffect (() => {
         setHeaderOption({
@@ -201,7 +211,8 @@ export function useEvents() {
         deleteTicket,
         createEventTicket,
         patchEventTicket,
-        getTicketInformation
+        getTicketInformation,
+        fetchEventsResale
     }
 
     return { ...eventMethods, ...ticketMethods };

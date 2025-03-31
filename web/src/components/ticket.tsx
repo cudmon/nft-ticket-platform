@@ -2,8 +2,9 @@ import useEventContract from "@/hooks/useEventContract";
 import { Text, Group, Button, NumberFormatter, Flex, Card, Modal, NumberInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Check, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Address } from "viem";
+import QRCode from "qrcode";
 
 interface Props {
   eventName: string;
@@ -13,10 +14,12 @@ interface Props {
   isResalable: boolean;
   eventAddress: Address;
   tokenId: number;
+  tokenAddress: string;
+  isResale: boolean;
 }
 
 const Ticket = (props: Props) => {
-  const { eventName, eventLocation, ticketPrice, isResalable, eventAddress, tokenId } = props;
+  const { eventName, eventLocation, ticketPrice, isResalable, eventAddress, tokenId, tokenAddress } = props;
   const eventDate = new Date(props.eventDate).toLocaleDateString("en-US", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -24,10 +27,21 @@ const Ticket = (props: Props) => {
 
   const useEventContractHook = useEventContract();
 
+  const createQRCode = async () => {
+    QRCode.toCanvas(document.getElementById('canvas'+tokenId), `This might prove that human can't overcome their curiosity.`, function (error) {
+    if (error) console.error(error)
+      console.log('success!');
+    })
+  };
+
   const sellTicket = async () => {
     useEventContractHook.resellTicket(eventAddress, tokenId, selectedPrice);
     close();
   };
+
+  useEffect(() => {
+    createQRCode();
+  }), [];
 
   return (
     <>
@@ -80,9 +94,14 @@ const Ticket = (props: Props) => {
             }
           </Group>
 
+          <canvas id={"canvas"+tokenId}></canvas>
+
           <Button color="red"
-                  disabled={!isResalable}
-                  onClick={open}>Sell</Button>
+                  disabled={!isResalable || props.isResale}
+                  onClick={open}>
+                    {
+                    !props.isResale ? 'Sell' : 'On flea market'
+                    }</Button>
         </Flex>
       </Card>
       
