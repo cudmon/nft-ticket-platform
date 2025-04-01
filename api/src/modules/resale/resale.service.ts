@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { IsNull, Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ResaleEntity } from "@/models/resale.entity";
@@ -18,6 +18,7 @@ export class ResaleService {
         },
       },
       where: {
+        order: IsNull(),
         ticket: {
           event: { id },
         },
