@@ -69,17 +69,29 @@ export class EventService implements OnModuleInit {
   private listenToTicketPurchases(address: string) {
     const contract = new Contract(address, eabi, this.provider);
 
-    contract.on("Ticket_Resold", async (resale_id: BigInt, address: string) => {
-      await this.orders.save(
-        this.orders.create({
-          resale: {
-            id: Number(resale_id),
+    contract.on(
+      "Ticket_Resold",
+      async (resale_id: BigInt, address: string, token_id: BigInt) => {
+        await this.orders.save(
+          this.orders.create({
+            resale: {
+              id: Number(resale_id),
+            },
+            address,
+            amount: 1,
+          })
+        );
+
+        await this.tokens.update(
+          {
+            nft_id: Number(token_id),
           },
-          address,
-          amount: 1,
-        })
-      );
-    });
+          {
+            address,
+          }
+        );
+      }
+    );
 
     contract.on(
       "Ticket_Bought",
@@ -132,15 +144,6 @@ export class EventService implements OnModuleInit {
             },
             price: Number(price),
           })
-        );
-
-        await this.tokens.update(
-          {
-            nft_id: Number(token_id),
-          },
-          {
-            address: from,
-          }
         );
       }
     );
