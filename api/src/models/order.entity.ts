@@ -28,7 +28,7 @@ export class OrderEntity extends BaseEntity {
   @Exclude()
   @ApiHideProperty()
   @ManyToOne(() => TicketEntity, (ticket) => ticket.id, {
-    nullable: false,
+    nullable: true,
   })
   @JoinColumn({
     name: "ticket_id",
