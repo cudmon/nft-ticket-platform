@@ -72,7 +72,7 @@ export class EventService implements OnModuleInit {
     contract.on(
       "Ticket_Resold",
       async (resale_id: BigInt, address: string, token_id: BigInt) => {
-        await this.orders.save(
+        const order = await this.orders.save(
           this.orders.create({
             resale: {
               id: Number(resale_id),
@@ -80,6 +80,17 @@ export class EventService implements OnModuleInit {
             address,
             amount: 1,
           })
+        );
+
+        await this.resales.update(
+          {
+            id: Number(resale_id),
+          },
+          {
+            order: {
+              id: order.id,
+            },
+          }
         );
 
         await this.tokens.update(
