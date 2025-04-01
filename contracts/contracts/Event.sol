@@ -32,7 +32,7 @@ contract Event is ERC721, Ownable(tx.origin) {
         string memory _symbol
     ) ERC721(_name, _symbol) {}
 
-    event Ticket_Resold(uint resale_id, address to);
+    event Ticket_Resold(uint resale_id, address to, uint token_id);
     event Ticket_Bought(uint ticket_id, address to, uint amount);
     event Ticket_Minted(uint token_id, uint ticket_id, address to);
     event Ticket_Resell(
@@ -103,6 +103,6 @@ contract Event is ERC721, Ownable(tx.origin) {
 
         payable(resale.from).transfer(msg.value);
 
-        emit Ticket_Resold(_resale_id, msg.sender);
+        emit Ticket_Resold(_resale_id, msg.sender, resale.token_id);
     }
 }
