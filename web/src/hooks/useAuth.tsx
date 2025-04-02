@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 export function useAuth () {
     const backendURL = process.env.NEXT_PUBLIC_API_URL;
 

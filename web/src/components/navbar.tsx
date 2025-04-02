@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import ProfileAvatar from "./profile-avatar";
-import { Flex, Input, Button } from "@mantine/core";
+import { Flex, Button } from "@mantine/core";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  const useAuthHook = useAuth();
 
   const [data, setData] = useState({
     id: null,
@@ -15,19 +16,18 @@ export default function Navbar() {
     email: "",
   });
 
-  useEffect(() => {
+  const fetchMe = async () => { 
+    const data = await useAuthHook.fetchMe();
 
-    fetch(`${API_URL}/auth/me`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-      })
-      .catch();
+    if (!data) {
+      return;
+    }
+
+    setData(data);
+  }
+
+  useEffect(() => {
+    fetchMe();
   }, []);
 
   return (

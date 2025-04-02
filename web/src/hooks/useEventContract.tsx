@@ -9,8 +9,6 @@ export default function useEventContract () {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     const buyTicket = async (eventContractAddress: Address, ticketId: number, ticketAmount: number, value: number) => {
-        
-        console.log(value * 1_000_000_000_000_000_000);
 
         const walletClient = ConnectWalletClient();
         const publicClient =  ConnectPublicClient();
@@ -57,14 +55,12 @@ export default function useEventContract () {
         const walletClient = ConnectWalletClient();
         const publicClient =  ConnectPublicClient();
 
-        console.log(price);
-
         try {
             const { request } = await publicClient.simulateContract({
                 address: eventContractAddress,
                 abi: abi,
                 functionName: 'buy_resale',
-                args: [resaleTicketId],
+                args: [resaleTicketId ],
                 account: (account as Address),
                 value: BigInt(price),
             })

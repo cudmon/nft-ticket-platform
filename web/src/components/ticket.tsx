@@ -16,10 +16,11 @@ interface Props {
   tokenId: number;
   tokenAddress: string;
   isResale: boolean;
+  ticketName: string;
 }
 
 const Ticket = (props: Props) => {
-  const { eventName, eventLocation, ticketPrice, isResalable, eventAddress, tokenId, tokenAddress } = props;
+  const { ticketName, eventName, eventLocation, ticketPrice, isResalable, eventAddress, tokenId, tokenAddress } = props;
   const eventDate = new Date(props.eventDate).toLocaleDateString("en-US", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -71,6 +72,13 @@ const Ticket = (props: Props) => {
             <Text fw={'bold'}>Location:</Text>
             <Text>
               {eventLocation}
+            </Text>
+          </Group>
+
+          <Group>
+            <Text fw={'bold'}>Ticket name:</Text>
+            <Text>
+              {ticketName}
             </Text>
           </Group>
 

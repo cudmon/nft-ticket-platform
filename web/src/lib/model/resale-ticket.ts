@@ -1,6 +1,7 @@
 interface ResaleTicket {
   id: number;
   price: number;
+  seller: string;
   ticket: Ticket;
 }
 

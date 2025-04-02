@@ -85,6 +85,7 @@ export default function Page() {
                       eventDate={new Date(token.event.date)}
                       eventLocation={token.event.location}
                       ticketPrice={Number(formatEther(BigInt(token.ticket.price)))}
+                      ticketName={token.ticket.name}
                       isResalable={token.ticket.resalable}
                       eventAddress={token.event.address}
                       tokenId={token.id}

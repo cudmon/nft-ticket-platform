@@ -28,8 +28,6 @@ export function useEvents() {
             return;
         }
 
-        console.log(me.id)
-
         const response = await fetch(`${backendURL}/users/${me.id}/events`, {
             method: 'GET',
             headers: {

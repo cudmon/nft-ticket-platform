@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Address, formatEther } from "viem";
 import useEventContract from "@/hooks/useEventContract";
+import useWallet from "@/hooks/useWallet";
 
 interface Props {
     params : Promise<{eventId: string}>;
@@ -48,6 +49,8 @@ export default function page(props: Props) {
     const useEventContractHook = useEventContract();
 
     const [resaleTickets, setResaleTickets] = useState<ResaleTicket[]>([]);
+
+    const { account } = useWallet();
 
     const fetchEventInformation = async () => {
         const { eventId } = await props.params;
@@ -114,6 +117,12 @@ export default function page(props: Props) {
         }
     };
 
+    const getLogs = async () => {
+        const { eventId } = await props.params;
+
+        let data = await useEventContractHook.getLogs('0xa16E02E87b7454126E5E10d957A927A7F5B5d2be');
+    }
+
     useEffect(() => {   
         fetchEventInformation();
         fetchEventTickets();
@@ -125,7 +134,6 @@ export default function page(props: Props) {
     return (
         <Grid grow={true}>
             <GridCol span={6} pos={'relative'}>
-
                 <Link href={"/"}>
                     <Button radius={"lg"}
                             style={{
@@ -248,7 +256,8 @@ export default function page(props: Props) {
                                                 <TableTd>
                                                     <Button variant="filled" color="green"
                                                             leftSection={<TicketCheck size={20}/>}
-                                                            onClick={() => useEventContractHook.buyResaleTicket(eventAddress, resaleTicket.id, resaleTicket.price)}>
+                                                            onClick={() => useEventContractHook.buyResaleTicket(eventAddress, resaleTicket.id, resaleTicket.price)}
+                                                            disabled={resaleTicket.seller == account}>
                                                         Check out
                                                     </Button>
                                                 </TableTd>
